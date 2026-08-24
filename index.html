@@ -238,11 +238,17 @@ h1, h2, h3 { text-wrap: balance; line-height: 1.25; }
 }
 .btn-primary:hover { box-shadow: 2px 2px 0 color-mix(in srgb, var(--accent-2) 35%, transparent); }
 
-/* stats strip */
+/* stats strip: full-width row below the hero split */
 .stats {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 2px; background: var(--line); border: 2px solid var(--line);
-  border-radius: 0; overflow: hidden; margin-top: 52px;
+  border-radius: 0; overflow: hidden;
+}
+.hero-stats {
+  margin-top: 60px;
+  opacity: 0; transform: translateY(30px); filter: blur(4px);
+  animation: heroIn .9s ease forwards;
+  animation-delay: .7s;
 }
 .stat { background: var(--surface); padding: 22px 20px; }
 .stat .num { font-family: var(--font-pixel); font-size: 26px; font-weight: 700; color: var(--accent-2); }
@@ -574,13 +580,6 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           <a class="btn" href="#projects">看作品</a>
           <a class="btn" href="https://github.com/gegemeimingzi" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
-
-        <div class="stats">
-          <div class="stat"><div class="num tnum" data-count="5">0</div><div class="lbl">已合并 PR（外部项目）</div></div>
-          <div class="stat"><div class="num tnum" data-count="3">0</div><div class="lbl">外部开源项目</div></div>
-          <div class="stat"><div class="num tnum" data-count="40" data-suffix="%">0</div><div class="lbl">昇腾 RTF 最大降幅</div></div>
-          <div class="stat"><div class="num tnum" data-count="4">0</div><div class="lbl">原创作品</div></div>
-        </div>
       </div>
     </div>
 
@@ -646,6 +645,15 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
         </svg>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats hero-stats">
+      <div class="stat"><div class="num tnum" data-count="5">0</div><div class="lbl">已合并 PR（外部项目）</div></div>
+      <div class="stat"><div class="num tnum" data-count="3">0</div><div class="lbl">外部开源项目</div></div>
+      <div class="stat"><div class="num tnum" data-count="40" data-suffix="%">0</div><div class="lbl">昇腾 RTF 最大降幅</div></div>
+      <div class="stat"><div class="num tnum" data-count="4">0</div><div class="lbl">原创作品</div></div>
     </div>
   </div>
 
