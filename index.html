@@ -373,15 +373,67 @@ section { padding: 84px 0; }
 footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: center; color: var(--text-faint); font-size: 12.5px; font-family: var(--font-mono); }
 
 /* ============================================================
-   3D Word Sphere
+   3D Word Sphere — Sun & Boy Scene
    ============================================================ */
-.word-sphere-section { padding: 100px 0; overflow: hidden; }
+.word-sphere-section {
+  position: relative;
+  min-height: 600px;
+  background: linear-gradient(180deg, #64B5F6 0%, #90CAF9 15%, #BBDEFB 30%, #E3F2FD 48%, #C8E6C9 65%, #A5D6A7 78%, #81C784 100%);
+  overflow: hidden;
+  padding: 50px 0 0;
+}
+.scene {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* sun glow behind sphere */
+.sun-glow {
+  position: absolute;
+  top: -20px;
+  left: calc(12% + 20px);
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,220,100,0.45) 0%, rgba(255,200,50,0.15) 45%, transparent 70%);
+  pointer-events: none;
+  animation: sunPulse 4s ease-in-out infinite;
+  filter: blur(2px);
+}
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* sun rays */
+.sun-rays {
+  position: absolute;
+  top: 60px;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,235,150,0.6) 20%, rgba(255,235,150,0.3) 50%, transparent 100%);
+  pointer-events: none;
+  transform: rotate(12deg);
+  filter: blur(1px);
+  opacity: 0.6;
+}
+.sun-rays:nth-child(2) { top: 90px; transform: rotate(16deg); opacity: 0.4; }
+.sun-rays:nth-child(3) { top: 120px; transform: rotate(20deg); opacity: 0.3; }
+
 .sphere-wrapper {
-  display: flex; justify-content: center; align-items: center;
-  height: 520px; perspective: 1200px; position: relative;
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 260px;
+  height: 260px;
+  perspective: 1200px;
 }
 .sphere {
-  position: relative; width: 420px; height: 420px;
+  position: relative; width: 260px; height: 260px;
   transform-style: preserve-3d;
   transition: transform 0.05s linear;
   cursor: grab;
@@ -395,31 +447,228 @@ footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: 
   user-select: none;
   transform-origin: center center;
   backface-visibility: hidden;
-  color: var(--text);
+  color: #FFF8E1;
   transition: color 0.3s, text-shadow 0.3s;
   pointer-events: none;
+  text-shadow: 0 0 6px rgba(255,180,50,0.5);
 }
 .sphere-word.lit {
-  color: var(--accent-2);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent),
-               0 0 40px color-mix(in srgb, var(--accent) 20%, transparent);
+  color: #FFFFFF;
+  text-shadow: 0 0 20px rgba(255,200,80,0.9),
+               0 0 50px rgba(255,180,50,0.5),
+               0 0 80px rgba(255,160,30,0.3);
 }
 .sphere-hint {
-  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
-  letter-spacing: 0.1em; opacity: 0.7; pointer-events: none;
+  position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.12em; opacity: 0.6; pointer-events: none;
 }
-/* sphere entrance: scale + blur burst */
+/* sphere entrance */
 .sphere-burst .sphere {
-  animation: sphereBurst 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: sphereBurst 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @keyframes sphereBurst {
   from { transform: scale(0) rotateX(0deg) rotateY(0deg); filter: blur(20px); opacity: 0; }
   to   { transform: scale(1) rotateX(0deg) rotateY(0deg); filter: blur(0); opacity: 1; }
 }
+
+/* sunbeam from sun to boy */
+.sunbeam {
+  position: absolute;
+  top: 40px;
+  left: 22%;
+  width: 55%;
+  height: 360px;
+  pointer-events: none;
+  background: linear-gradient(155deg,
+    rgba(255, 240, 160, 0.2) 0%,
+    rgba(255, 235, 150, 0.08) 40%,
+    rgba(255, 230, 140, 0.03) 70%,
+    transparent 100%);
+  transform: skewX(-25deg);
+  filter: blur(25px);
+  animation: beamShimmer 5s ease-in-out infinite;
+}
+@keyframes beamShimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+/* grass */
+.grass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: linear-gradient(180deg, #7CB342 0%, #689F38 50%, #558B2F 100%);
+}
+.grass::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: repeating-radial-gradient(
+    circle at 50% 100%,
+    #7CB342 0px, #7CB342 4px,
+    #689F38 4px, #689F38 8px
+  );
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  opacity: 0.8;
+}
+
+/* cartoon boy */
+.boy {
+  position: absolute;
+  bottom: 50px;
+  right: 18%;
+  width: 80px;
+  height: 130px;
+  z-index: 10;
+  animation: boyBreathe 3s ease-in-out infinite;
+}
+@keyframes boyBreathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.boy-head {
+  width: 50px;
+  height: 50px;
+  background: #FFCCBC;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+  box-shadow: inset -3px -3px 0 rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.08);
+}
+.boy-hair {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54px;
+  height: 26px;
+  background: #5D4037;
+  border-radius: 27px 27px 0 0;
+}
+.boy-hair::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  width: 14px;
+  height: 14px;
+  background: #5D4037;
+  border-radius: 50%;
+}
+.boy-eye {
+  width: 5px;
+  height: 5px;
+  background: #3E2723;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+}
+.boy-eye.left { left: 12px; }
+.boy-eye.right { right: 12px; }
+.boy-blush {
+  width: 8px;
+  height: 5px;
+  background: rgba(255,100,100,0.25);
+  border-radius: 50%;
+  position: absolute;
+  top: 28px;
+}
+.boy-blush.left { left: 6px; }
+.boy-blush.right { right: 6px; }
+.boy-mouth {
+  width: 12px;
+  height: 6px;
+  border-bottom: 2.5px solid #E57373;
+  border-radius: 0 0 12px 12px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.boy-body {
+  width: 36px;
+  height: 42px;
+  background: #EF5350;
+  border-radius: 12px 12px 8px 8px;
+  margin: -2px auto 0;
+  position: relative;
+}
+.boy-arm {
+  width: 11px;
+  height: 32px;
+  background: #FFCCBC;
+  border-radius: 6px;
+  position: absolute;
+  top: 4px;
+}
+.boy-arm.left { left: -10px; transform: rotate(25deg); }
+.boy-arm.right { right: -10px; transform: rotate(-25deg); }
+.boy-legs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: -4px;
+}
+.boy-leg {
+  width: 14px;
+  height: 26px;
+  background: #3F51B5;
+  border-radius: 0 0 8px 8px;
+}
+.boy-shoe {
+  width: 18px;
+  height: 8px;
+  background: #5D4037;
+  border-radius: 0 0 8px 8px;
+  margin: -2px auto 0;
+}
+
+/* clouds */
+.cloud {
+  position: absolute;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50px;
+  pointer-events: none;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+}
+.cloud-1 {
+  width: 80px; height: 28px;
+  top: 40px; right: 15%;
+  animation: cloudFloat 20s ease-in-out infinite;
+}
+.cloud-1::before { width: 36px; height: 36px; top: -16px; left: 12px; }
+.cloud-1::after { width: 28px; height: 28px; top: -10px; right: 14px; }
+.cloud-2 {
+  width: 60px; height: 22px;
+  top: 80px; left: 55%;
+  animation: cloudFloat 25s ease-in-out infinite reverse;
+}
+.cloud-2::before { width: 28px; height: 28px; top: -12px; left: 10px; }
+.cloud-2::after { width: 22px; height: 22px; top: -8px; right: 10px; }
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
 @media (max-width: 640px) {
-  .sphere-wrapper { height: 380px; }
-  .sphere { width: 320px; height: 320px; }
+  .scene { height: 420px; }
+  .sphere-wrapper { left: 5%; width: 200px; height: 200px; }
+  .sphere { width: 200px; height: 200px; }
+  .sun-glow { left: calc(5% + 10px); width: 180px; height: 180px; }
+  .boy { right: 10%; bottom: 40px; transform: scale(0.85); }
+  .sunbeam { left: 18%; width: 60%; height: 300px; }
 }
 
 /* ============================================================
@@ -710,17 +959,45 @@ footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: 
   </div>
 </section>
 
-<!-- Word Sphere -->
+<!-- Word Sphere — Sun & Boy Scene -->
 <section id="word-sphere" class="word-sphere-section">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">What I Do</div>
       <h2>技术标签云</h2>
-      <p>拖动球体探索技能领域。</p>
+      <p>拖动太阳探索技能领域。</p>
     </div>
-    <div class="sphere-wrapper" id="sphereWrapper">
-      <div class="sphere" id="sphere"></div>
-      <span class="sphere-hint">DRAG TO ROTATE</span>
+    <div class="scene">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="sun-glow"></div>
+      <div class="sun-rays"></div>
+      <div class="sun-rays"></div>
+      <div class="sun-rays"></div>
+      <div class="sphere-wrapper" id="sphereWrapper">
+        <div class="sphere" id="sphere"></div>
+        <span class="sphere-hint">DRAG THE SUN</span>
+      </div>
+      <div class="sunbeam"></div>
+      <div class="grass"></div>
+      <div class="boy">
+        <div class="boy-head">
+          <div class="boy-hair"></div>
+          <div class="boy-eye left"></div>
+          <div class="boy-eye right"></div>
+          <div class="boy-blush left"></div>
+          <div class="boy-blush right"></div>
+          <div class="boy-mouth"></div>
+        </div>
+        <div class="boy-body">
+          <div class="boy-arm left"></div>
+          <div class="boy-arm right"></div>
+        </div>
+        <div class="boy-legs">
+          <div class="boy-leg"><div class="boy-shoe"></div></div>
+          <div class="boy-leg"><div class="boy-shoe"></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -835,7 +1112,7 @@ footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: 
       { text: "数据工程", size: 0.75, weight: 500 },
     ];
 
-    var RADIUS = 200;
+    var RADIUS = 115;
     var n = words.length;
     var phi = Math.PI * (3 - Math.sqrt(5));
     var els = [];
