@@ -373,6 +373,56 @@ section { padding: 84px 0; }
 footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: center; color: var(--text-faint); font-size: 12.5px; font-family: var(--font-mono); }
 
 /* ============================================================
+   3D Word Sphere
+   ============================================================ */
+.word-sphere-section { padding: 100px 0; overflow: hidden; }
+.sphere-wrapper {
+  display: flex; justify-content: center; align-items: center;
+  height: 520px; perspective: 1200px; position: relative;
+}
+.sphere {
+  position: relative; width: 420px; height: 420px;
+  transform-style: preserve-3d;
+  transition: transform 0.05s linear;
+  cursor: grab;
+}
+.sphere:active { cursor: grabbing; }
+.sphere-word {
+  position: absolute;
+  left: 50%; top: 50%;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  user-select: none;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  color: var(--text);
+  transition: color 0.3s, text-shadow 0.3s;
+  pointer-events: none;
+}
+.sphere-word.lit {
+  color: var(--accent-2);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent),
+               0 0 40px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.sphere-hint {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+  letter-spacing: 0.1em; opacity: 0.7; pointer-events: none;
+}
+/* sphere entrance: scale + blur burst */
+.sphere-burst .sphere {
+  animation: sphereBurst 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes sphereBurst {
+  from { transform: scale(0) rotateX(0deg) rotateY(0deg); filter: blur(20px); opacity: 0; }
+  to   { transform: scale(1) rotateX(0deg) rotateY(0deg); filter: blur(0); opacity: 1; }
+}
+@media (max-width: 640px) {
+  .sphere-wrapper { height: 380px; }
+  .sphere { width: 320px; height: 320px; }
+}
+
+/* ============================================================
    Reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -660,6 +710,21 @@ footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: 
   </div>
 </section>
 
+<!-- Word Sphere -->
+<section id="word-sphere" class="word-sphere-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">What I Do</div>
+      <h2>技术标签云</h2>
+      <p>拖动球体探索技能领域。</p>
+    </div>
+    <div class="sphere-wrapper" id="sphereWrapper">
+      <div class="sphere" id="sphere"></div>
+      <span class="sphere-hint">DRAG TO ROTATE</span>
+    </div>
+  </div>
+</section>
+
 <!-- Contact -->
 <section id="contact" class="contact">
   <div class="wrap">
@@ -728,6 +793,176 @@ footer.footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: 
     });
   }, { threshold: 0.3 });
   document.querySelectorAll(".skill-card").forEach(function (el) { bio.observe(el); });
+
+  /* ============================================================
+     3D Word Sphere
+     ============================================================ */
+  (function () {
+    var sphere = document.getElementById("sphere");
+    var wrapper = document.getElementById("sphereWrapper");
+    if (!sphere || !wrapper) return;
+
+    var words = [
+      { text: "LLM", size: 1.45, weight: 800 },
+      { text: "Agent", size: 1.38, weight: 700 },
+      { text: "大模型算法工程师", size: 1.25, weight: 700 },
+      { text: "FlashAttention", size: 1.15, weight: 600 },
+      { text: "Ascend 910", size: 1.12, weight: 600 },
+      { text: "机器学习", size: 1.05, weight: 600 },
+      { text: "深度学习", size: 1.05, weight: 600 },
+      { text: "NPU 算子", size: 1.02, weight: 600 },
+      { text: "评测基准", size: 0.98, weight: 500 },
+      { text: "Bench", size: 0.98, weight: 500 },
+      { text: "产品经理", size: 0.95, weight: 500 },
+      { text: "vLLM", size: 0.95, weight: 500 },
+      { text: "FastAPI", size: 0.92, weight: 500 },
+      { text: "Python", size: 0.92, weight: 500 },
+      { text: "开源贡献", size: 0.90, weight: 500 },
+      { text: "RAG", size: 0.88, weight: 500 },
+      { text: "多模态", size: 0.88, weight: 500 },
+      { text: "推理优化", size: 0.88, weight: 500 },
+      { text: "智能体", size: 0.85, weight: 500 },
+      { text: "昇腾", size: 0.85, weight: 500 },
+      { text: "AIBrix", size: 0.82, weight: 500 },
+      { text: "Dify", size: 0.82, weight: 500 },
+      { text: "OpenSandbox", size: 0.82, weight: 500 },
+      { text: "NLP", size: 0.80, weight: 500 },
+      { text: "GitHub", size: 0.80, weight: 500 },
+      { text: "CANN", size: 0.80, weight: 500 },
+      { text: "RTF", size: 0.78, weight: 500 },
+      { text: "Prompt Engineering", size: 0.78, weight: 500 },
+      { text: "沙箱", size: 0.75, weight: 500 },
+      { text: "数据工程", size: 0.75, weight: 500 },
+    ];
+
+    var RADIUS = 200;
+    var n = words.length;
+    var phi = Math.PI * (3 - Math.sqrt(5));
+    var els = [];
+
+    for (var i = 0; i < n; i++) {
+      var w = words[i];
+      var y = 1 - (i / (n - 1)) * 2;
+      var rY = Math.sqrt(1 - y * y);
+      var theta = phi * i;
+      var x = Math.cos(theta) * rY;
+      var z = Math.sin(theta) * rY;
+
+      var el = document.createElement("span");
+      el.className = "sphere-word";
+      el.textContent = w.text;
+      el.style.fontSize = (13 * w.size) + "px";
+      el.style.fontWeight = w.weight;
+      el.style.opacity = 0.25 + (z + 1) / 2 * 0.75;
+      if (z > 0.3) el.classList.add("lit");
+
+      // store raw coords for runtime transform
+      el._x = x * RADIUS;
+      el._y = y * RADIUS;
+      el._z = z * RADIUS;
+      sphere.appendChild(el);
+      els.push(el);
+    }
+
+    var rotX = 0, rotY = 0;
+    var autoVx = 0.15, autoVy = 0.08;
+    var vx = autoVx, vy = autoVy;
+    var isDragging = false;
+    var lastX, lastY;
+    var damping = 0.96;
+    var rafId;
+
+    function update() {
+      rotX += vy;
+      rotY += vx;
+
+      var cx = Math.cos(rotX), sx = Math.sin(rotX);
+      var cy = Math.cos(rotY), sy = Math.sin(rotY);
+
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        var x = el._x, y = el._y, z = el._z;
+
+        // rotate around Y then X
+        var x1 = x * cy + z * sy;
+        var z1 = -x * sy + z * cy;
+        var y1 = y * cx - z1 * sx;
+        var z2 = y * sx + z1 * cx;
+
+        el.style.transform = "translate3d(" + x1 + "px, " + y1 + "px, " + z2 + "px) translate(-50%, -50%)";
+        el.style.zIndex = Math.round(z2 + RADIUS);
+        el.style.opacity = 0.25 + (z2 + RADIUS) / (2 * RADIUS) * 0.75;
+
+        if (z2 > 30) {
+          if (!el.classList.contains("lit")) el.classList.add("lit");
+        } else {
+          if (el.classList.contains("lit")) el.classList.remove("lit");
+        }
+      }
+
+      if (!isDragging) {
+        vx *= damping;
+        vy *= damping;
+        if (Math.abs(vx) < 0.02) vx = autoVx;
+        if (Math.abs(vy) < 0.02) vy = autoVy;
+      }
+
+      rafId = requestAnimationFrame(update);
+    }
+
+    // drag handlers
+    wrapper.addEventListener("mousedown", function (e) {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      vx = 0; vy = 0;
+      sphere.style.cursor = "grabbing";
+    });
+    window.addEventListener("mousemove", function (e) {
+      if (!isDragging) return;
+      var dx = e.clientX - lastX;
+      var dy = e.clientY - lastY;
+      vx = dx * 0.008;
+      vy = dy * 0.008;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+    window.addEventListener("mouseup", function () {
+      isDragging = false;
+      sphere.style.cursor = "grab";
+    });
+
+    // touch support
+    wrapper.addEventListener("touchstart", function (e) {
+      isDragging = true;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+      vx = 0; vy = 0;
+    }, { passive: true });
+    window.addEventListener("touchmove", function (e) {
+      if (!isDragging) return;
+      var dx = e.touches[0].clientX - lastX;
+      var dy = e.touches[0].clientY - lastY;
+      vx = dx * 0.012;
+      vy = dy * 0.012;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener("touchend", function () { isDragging = false; });
+
+    // entrance animation via IntersectionObserver
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          wrapper.classList.add("sphere-burst");
+          sio.unobserve(en.target);
+          // start rotation after burst
+          setTimeout(function () { update(); }, 100);
+        }
+      });
+    }, { threshold: 0.2 });
+    sio.observe(wrapper);
+  })();
 })();
 </script>
 </body>
