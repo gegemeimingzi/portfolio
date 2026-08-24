@@ -536,6 +536,224 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 }
 
 /* ============================================================
+   My Journey (runner)
+   ============================================================ */
+.journey { padding: 90px 0 110px; }
+.journey-stage {
+  position: relative;
+  height: 900px;
+  margin-top: 8px;
+}
+.journey-path {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.journey-path path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  opacity: 0.4;
+}
+.journey-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 170px;
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity .4s;
+}
+.journey-node .jn-mark {
+  width: 44px; height: 44px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 3px solid var(--accent-2);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 rgba(60,45,30,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  position: relative;
+}
+.journey-node .jn-name {
+  margin-top: 14px;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.journey-node .jn-sub {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  margin-top: 5px;
+}
+.journey-node .jn-bubble {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface);
+  border: 3px solid var(--text);
+  box-shadow: 4px 4px 0 rgba(60,45,30,.15);
+  padding: 9px 12px;
+  width: 190px;
+  min-height: 44px;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity .3s;
+  text-align: left;
+}
+/* bubbles open toward the outer page edges; the runner stands on the inner side */
+.journey-node[data-x="22"] .jn-bubble {
+  right: calc(100% + 38px);
+}
+.journey-node[data-x="22"] .jn-bubble::before {
+  content: ""; position: absolute; right: -15px; top: 50%; transform: translateY(-50%);
+  border-left: 15px solid var(--text); border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+}
+.journey-node[data-x="78"] .jn-bubble {
+  left: calc(100% + 38px);
+}
+.journey-node[data-x="78"] .jn-bubble::before {
+  content: ""; position: absolute; left: -15px; top: 50%; transform: translateY(-50%);
+  border-right: 15px solid var(--text); border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+}
+.journey-node .jn-bubble.show { opacity: 1; }
+.journey-node .jn-caret {
+  display: inline-block;
+  width: 2px; height: 14px;
+  background: var(--accent-2);
+  vertical-align: -2px;
+  margin-left: 2px;
+  animation: blink 1s steps(1) infinite;
+}
+.journey-node .jn-caret.done { display: none; }
+.journey-node.visited { opacity: 0.8; }
+.journey-node.active { opacity: 1; }
+.journey-node.active .jn-mark { animation: markBounce .5s ease; }
+@keyframes markBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* pixel runner */
+.journey-runner {
+  position: absolute;
+  z-index: 10;
+  width: 48px; height: 56px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.journey-runner.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
+.run-svg {
+  display: block;
+  width: 48px; height: 56px;
+  overflow: visible;
+}
+.run-svg .run-arm-l, .run-svg .run-arm-r, .run-svg .run-leg-l, .run-svg .run-leg-r {
+  transform-box: fill-box;
+  transform-origin: center top;
+}
+.journey-runner.running .run-leg-l { animation: runLeg .3s ease-in-out infinite; }
+.journey-runner.running .run-leg-r { animation: runLegB .3s ease-in-out infinite; }
+.journey-runner.running .run-arm-l { animation: runArm .3s ease-in-out infinite; }
+.journey-runner.running .run-arm-r { animation: runArmB .3s ease-in-out infinite; }
+.journey-runner.running .run-svg { animation: runBob .3s ease-in-out infinite; }
+@keyframes runLeg {
+  0% { transform: rotate(35deg); }
+  50% { transform: rotate(-30deg); }
+  100% { transform: rotate(35deg); }
+}
+@keyframes runLegB {
+  0% { transform: rotate(-30deg); }
+  50% { transform: rotate(35deg); }
+  100% { transform: rotate(-30deg); }
+}
+@keyframes runArm {
+  0% { transform: rotate(-25deg); }
+  50% { transform: rotate(30deg); }
+  100% { transform: rotate(-25deg); }
+}
+@keyframes runArmB {
+  0% { transform: rotate(30deg); }
+  50% { transform: rotate(-25deg); }
+  100% { transform: rotate(30deg); }
+}
+@keyframes runBob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+/* final infinity node */
+.journey-node.jn-final .jn-mark {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: var(--text);
+}
+.journey-node.jn-final .inf-svg {
+  width: 34px; height: 18px;
+  display: block;
+  animation: infBreath 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,.4));
+}
+@keyframes infBreath {
+  0%,100% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+
+/* replay */
+.journey-replay {
+  position: absolute;
+  bottom: 0; right: 0;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  border: 3px solid var(--text);
+  background: var(--surface);
+  box-shadow: 3px 3px 0 rgba(60,45,30,.15);
+  padding: 10px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.journey-replay.show { opacity: 1; pointer-events: auto; }
+.journey-replay:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 rgba(60,45,30,.15); }
+.journey-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .journey-stage { height: 1000px; }
+  .journey-node .jn-bubble { width: 150px; font-size: 12px; }
+  /* narrow screens: bubbles open inward so they never clip the page edge
+     (the runner sits on the outer side here, so they stay clear of each other) */
+  .journey-node[data-x="22"] .jn-bubble { right: auto; left: calc(100% + 18px); }
+  .journey-node[data-x="22"] .jn-bubble::before {
+    right: auto; left: -14px;
+    border-right: 14px solid var(--text); border-left: none;
+    border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+  }
+  .journey-node[data-x="78"] .jn-bubble { left: auto; right: calc(100% + 18px); }
+  .journey-node[data-x="78"] .jn-bubble::before {
+    left: auto; right: -14px;
+    border-left: 14px solid var(--text); border-right: none;
+    border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+  }
+}
+
+/* ============================================================
    Reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -555,6 +773,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   <div class="wrap nav-inner">
     <a class="nav-logo" href="#">gegemeimingzi<span class="dot">.</span></a>
     <div class="nav-links">
+      <a href="#journey">旅程</a>
       <a href="#open-source">开源贡献</a>
       <a href="#projects">作品</a>
       <a href="#skills">技能</a>
@@ -698,6 +917,156 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   </div>
   <div class="hero-particles" id="heroParticles"></div>
 </header>
+
+<!-- My Journey -->
+<section id="journey" class="journey">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">My Journey</div>
+      <h2>我的旅程</h2>
+      <p>从小城一路跑到大厂，每一站都值得纪念。</p>
+    </div>
+    <div class="journey-stage reveal" id="journeyStage">
+      <svg class="journey-path" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path id="journeyCurve" d=""/>
+      </svg>
+
+      <div class="journey-node" data-x="22" data-y="18">
+        <div class="jn-mark">🏫</div>
+        <div class="jn-name">青山小学</div>
+        <div class="jn-sub">01 · 青山</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="78" data-y="28">
+        <div class="jn-mark">📚</div>
+        <div class="jn-name">营山中学</div>
+        <div class="jn-sub">02 · 营山</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="22" data-y="38">
+        <div class="jn-mark">🏛️</div>
+        <div class="jn-name">四川轻化工大学</div>
+        <div class="jn-sub">03 · SUSE 自贡</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="78" data-y="48">
+        <div class="jn-mark">🎓</div>
+        <div class="jn-name">深圳大学</div>
+        <div class="jn-sub">04 · SZU 深圳</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="22" data-y="58">
+        <div class="jn-mark">🗺️</div>
+        <div class="jn-name">调查测绘中心</div>
+        <div class="jn-sub">05 · 第一份实习</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="78" data-y="68">
+        <div class="jn-mark">📱</div>
+        <div class="jn-name">荣耀</div>
+        <div class="jn-sub">06 · HONOR</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node" data-x="22" data-y="78">
+        <div class="jn-mark">🐰</div>
+        <div class="jn-name">小米</div>
+        <div class="jn-sub">07 · Xiaomi</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-node jn-final" data-x="78" data-y="88">
+        <div class="jn-mark inf-mark">
+          <svg class="inf-svg" viewBox="0 0 48 24"><path d="M12,12 C4,0 4,24 12,12 C20,0 20,24 28,12 C36,0 36,24 28,12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="jn-name">∞ 未完待续</div>
+        <div class="jn-sub">Keep going</div>
+        <div class="jn-bubble"><span class="jn-text"></span><span class="jn-caret"></span></div>
+      </div>
+
+      <div class="journey-runner" id="journeyRunner">
+        <svg class="run-svg" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
+          <!-- 双肩包（背在身后） -->
+          <rect x="33" y="24" width="13" height="20" rx="3" fill="#c2410c" stroke="#26231d" stroke-width="1.6"/>
+          <path d="M33,30 H46" stroke="#8a2c06" stroke-width="1.4"/>
+          <path d="M33,38 H46" stroke="#8a2c06" stroke-width="1.4"/>
+          <rect x="36" y="21" width="7" height="5" rx="2" fill="#8a2c06" stroke="#26231d" stroke-width="1"/>
+
+          <!-- 后摆手臂 -->
+          <g class="run-arm-l">
+            <path d="M21,31 Q13,35 11,43" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="11" cy="44" r="2.5" fill="#f4d2bf" stroke="#26231d" stroke-width="1.2"/>
+          </g>
+
+          <!-- 腿（先画，短裤盖住裤腿顶部） -->
+          <g class="run-leg-l">
+            <path d="M26,58 Q20,62 24,66" fill="none" stroke="#31313a" stroke-width="6" stroke-linecap="round"/>
+            <path d="M21,65 Q26,64 31,65 L31,68 Q26,70 21,66 Z" fill="#f4f1e8" stroke="#26231d" stroke-width="1.3"/>
+          </g>
+          <g class="run-leg-r">
+            <path d="M34,58 Q40,62 36,66" fill="none" stroke="#31313a" stroke-width="6" stroke-linecap="round"/>
+            <path d="M31,65 Q34,64 37,65 Q41,65 40,68 Q33,70 31,68 Z" fill="#f4f1e8" stroke="#26231d" stroke-width="1.3"/>
+          </g>
+
+          <!-- 躯干（橙T恤 + 领子 + 徽章） -->
+          <path d="M20,29 Q17,42 22,50 L38,50 Q43,42 40,29 Q30,25 20,29 Z" fill="#d97757" stroke="#26231d" stroke-width="2"/>
+          <path d="M24,29 L30,35 L36,29" fill="none" stroke="#26231d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30" cy="42" r="2" fill="#fff" stroke="#26231d" stroke-width="1.1"/>
+
+          <!-- 短裤 -->
+          <path d="M22,50 Q21,55 24,58 L27,58 L27,53 L33,53 L33,58 L36,58 Q39,55 38,50 Z" fill="#31313a" stroke="#26231d" stroke-width="2"/>
+
+          <!-- 前摆手臂 -->
+          <g class="run-arm-r">
+            <path d="M39,31 Q47,35 48,42" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="48" cy="43" r="2.5" fill="#f4d2bf" stroke="#26231d" stroke-width="1.2"/>
+          </g>
+
+          <!-- 后身长发（垂到肩后，跑步时向后飘） -->
+          <path d="M13,13 Q10,2 30,0 Q50,2 47,13 Q49,21 45,30 Q42,37 35,39 Q30,41 25,39 Q18,37 15,30 Q11,21 13,13 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.8"/>
+          <path d="M19,30 Q30,26 41,30" fill="none" stroke="#4a3a30" stroke-width="1.2" opacity="0.6"/>
+          <path d="M20,6 Q30,3.5 40,6" fill="none" stroke="#4a3a30" stroke-width="1.3" stroke-linecap="round"/>
+
+          <!-- 头（Q版大头）+ 耳朵 -->
+          <ellipse cx="30" cy="15" rx="16" ry="13.5" fill="#f4d2bf" stroke="#26231d" stroke-width="2.2"/>
+          <ellipse cx="14" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#26231d" stroke-width="1.6"/>
+          <ellipse cx="46" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#26231d" stroke-width="1.6"/>
+
+          <!-- 额前刘海 -->
+          <path d="M14,12.5 Q13,3 30,1.5 Q47,3 46,12.5 Q46,11 43,10 Q39,8 36,10 Q34,8 30,9.5 Q26,8 24,10 Q21,8 17,10 Q14,11 14,12.5 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.8"/>
+          <!-- 垂在肩前的长发缕（框住脸） -->
+          <path d="M14,12 Q11,22 15,30 Q12,22 16,15 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.5"/>
+          <path d="M46,12 Q49,22 45,30 Q48,22 44,15 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.5"/>
+
+          <!-- 圆框眼镜 -->
+          <circle cx="22.5" cy="18" r="4.6" fill="none" stroke="#26231d" stroke-width="1.6"/>
+          <circle cx="37.5" cy="18" r="4.6" fill="none" stroke="#26231d" stroke-width="1.6"/>
+          <line x1="27.1" y1="18" x2="32.9" y2="18" stroke="#26231d" stroke-width="1.6"/>
+          <line x1="17.9" y1="18" x2="14" y2="18.6" stroke="#26231d" stroke-width="1.5"/>
+
+          <!-- 眼睛 + 高光 -->
+          <ellipse cx="22.5" cy="18.5" rx="2.1" ry="2.5" fill="#26231d"/>
+          <ellipse cx="37.5" cy="18.5" rx="2.1" ry="2.5" fill="#26231d"/>
+          <circle cx="23.3" cy="17.4" r="0.8" fill="#fff"/>
+          <circle cx="38.3" cy="17.4" r="0.8" fill="#fff"/>
+
+          <!-- 痞笑 + 腮红 -->
+          <path d="M27,24 Q31,26 35,23" fill="none" stroke="#b06a52" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="16" cy="22" rx="3" ry="1.8" fill="#e8a090" opacity="0.5"/>
+          <ellipse cx="44" cy="22" rx="3" ry="1.8" fill="#e8a090" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <button class="journey-replay" id="journeyReplay">↻ 重新播放</button>
+    </div>
+    <p class="journey-note">点击任意节点，小跑过去重听那段回忆。</p>
+  </div>
+</section>
 
 <!-- Open Source -->
 <section id="open-source">
@@ -1223,6 +1592,244 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       requestAnimationFrame(tick);
     }
     tick();
+  })();
+
+  /* ============================================================
+     My Journey (runner)
+     ============================================================ */
+  (function () {
+    var stage = document.getElementById("journeyStage");
+    var runner = document.getElementById("journeyRunner");
+    var replayBtn = document.getElementById("journeyReplay");
+    if (!stage || !runner || !replayBtn) return;
+    var nodes = Array.prototype.slice.call(stage.querySelectorAll(".journey-node"));
+
+    var script = [
+      { text: "我永远喜欢在青山的时光！" },
+      { text: "没想到吧，GLM的唐杰师兄是我的老学长~" },
+      { text: "SUSE的时光无忧无虑，真好！" },
+      { text: "终于来到了小时候的梦中情校，I ❤ SZU，不过化腾学者能不能给我发一张offer~" },
+      { text: "第一次实习，领到第一份工资啦~" },
+      { text: "见到了大公司是如何运转，谢谢荣耀！" },
+      { text: "军儿给我机会看看首都，哈哈哈，在小米真的学到很多呀！" },
+      { text: "人生无限，AI无限，keep going!" }
+    ];
+
+    var pos = nodes.map(function (n) {
+      return { x: parseFloat(n.getAttribute("data-x")), y: parseFloat(n.getAttribute("data-y")) };
+    });
+
+    var playing = false;
+    var token = 0;
+    var spline = { controls: [] };
+    var nodeLens = [];
+
+    function size() {
+      var r = stage.getBoundingClientRect();
+      return { w: r.width, h: r.height };
+    }
+    function moveAlongPath(lenFrom, lenTo, dur, myToken, done) {
+      var path = document.getElementById("journeyCurve");
+      var s = size();
+      if (!path || Math.abs(lenTo - lenFrom) < 0.1) { done(); return; }
+      var px0 = path.getPointAtLength(lenFrom).x;
+      var px1 = path.getPointAtLength(lenTo).x;
+      if (px1 > px0) runner.classList.remove("facing-left");
+      else runner.classList.add("facing-left");
+      runner.classList.add("running");
+      var start = null;
+      function step(ts) {
+        if (token !== myToken) return;
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var pt = path.getPointAtLength(lenFrom + (lenTo - lenFrom) * p);
+        runner.style.left = (pt.x / 100 * s.w) + "px";
+        runner.style.top = (pt.y / 100 * s.h) + "px";
+        if (p < 1) requestAnimationFrame(step);
+        else { runner.classList.remove("running"); done(); }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function hopX(dx, dur, myToken, done) {
+      var fromX = runner.offsetLeft;
+      var toX = fromX + dx;
+      var start = null;
+      function step(ts) {
+        if (token !== myToken) return;
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        runner.style.left = (fromX + (toX - fromX) * p) + "px";
+        if (p < 1) requestAnimationFrame(step);
+        else done();
+      }
+      requestAnimationFrame(step);
+    }
+
+    function typeText(el, caret, text, myToken, done) {
+      var i = 0;
+      el.textContent = "";
+      caret.classList.remove("done");
+      function tick() {
+        if (token !== myToken) return;
+        el.textContent = text.slice(0, i);
+        i++;
+        if (i <= text.length) setTimeout(tick, 45);
+        else { caret.classList.add("done"); done(); }
+      }
+      setTimeout(tick, 30);
+    }
+
+    function runTo(i) {
+      if (i >= script.length) { finish(); return; }
+      var myToken = token;
+      var node = nodes[i];
+      var side = node.getAttribute("data-x") == "22" ? -1 : 1;
+      // bubbles open outward on desktop (runner parks inner), inward on mobile (runner parks outer)
+      var narrow = matchMedia("(max-width: 640px)").matches ? 1 : -1;
+
+      function speak() {
+        if (token !== myToken) return;
+        node.classList.add("active", "visited");
+        var bubble = node.querySelector(".jn-bubble");
+        bubble.classList.add("show");
+        typeText(node.querySelector(".jn-text"), node.querySelector(".jn-caret"), script[i].text, myToken, function () {
+          if (token !== myToken) return;
+          node.classList.remove("active");
+          // bubble stays visible; just move on
+          setTimeout(function () { if (token === myToken) runTo(i + 1); }, 450);
+        });
+      }
+      function arrive() {
+        if (token !== myToken) return;
+        // step to the side opposite the bubble so the runner never overlaps it
+        if (side === 1) runner.classList.add("facing-left");
+        else runner.classList.remove("facing-left");
+        hopX(narrow * side * 66, 170, myToken, speak);
+      }
+
+      if (i === 0) { arrive(); return; }    // runner already on the line at node 0
+      // hop back onto the line, then run exactly along the path
+      var prevSide = nodes[i - 1].getAttribute("data-x") == "22" ? -1 : 1;
+      hopX(narrow * prevSide * 66, 150, myToken, function () {
+        if (token !== myToken) return;
+        var dist = Math.abs(nodeLens[i] - nodeLens[i - 1]);
+        var dur = Math.max(1000, dist * 20);
+        moveAlongPath(nodeLens[i - 1], nodeLens[i], dur, myToken, arrive);
+      });
+    }
+
+    function finish() {
+      playing = false;
+      replayBtn.classList.add("show");
+    }
+
+    function play() {
+      if (playing) return;
+      token++;
+      var t = token;
+      playing = true;
+      replayBtn.classList.remove("show");
+      nodes.forEach(function (n) {
+        n.classList.remove("active", "visited");
+        var b = n.querySelector(".jn-bubble");
+        b.classList.remove("show");
+        n.querySelector(".jn-text").textContent = "";
+      });
+      var s = size();
+      runner.style.left = (pos[0].x / 100 * s.w) + "px";
+      runner.style.top = (pos[0].y / 100 * s.h) + "px";
+      runner.classList.add("facing-left");
+      setTimeout(function () { if (token === t) runTo(0); }, 350);
+    }
+
+    function stopAndGo(i) {
+      token++;
+      playing = true;
+      replayBtn.classList.remove("show");
+      nodes.forEach(function (n) { n.classList.remove("active"); });
+      runTo(i);
+    }
+
+    replayBtn.addEventListener("click", play);
+    nodes.forEach(function (n, i) {
+      n.addEventListener("click", function () { stopAndGo(i); });
+    });
+
+    var started = false;
+    var jio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && !started) {
+          started = true;
+          play();
+          jio.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    jio.observe(stage);
+
+    // layout nodes + runner (nodes carry data-x/data-y in %)
+    function buildSpline(pts, w, h) {
+      // d uses percentages (matches the SVG viewBox 0-100); controls in px
+      var d = "M" + pts[0].x + "," + pts[0].y;
+      var controls = [];
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p0 = pts[Math.max(0, i - 1)];
+        var p1 = pts[i];
+        var p2 = pts[i + 1];
+        var p3 = pts[Math.min(pts.length - 1, i + 2)];
+        var c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 };
+        var c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 };
+        d += " C" + c1.x.toFixed(2) + "," + c1.y.toFixed(2) +
+             " " + c2.x.toFixed(2) + "," + c2.y.toFixed(2) +
+             " " + p2.x.toFixed(2) + "," + p2.y.toFixed(2);
+        controls.push({
+          c1: { x: c1.x / 100 * w, y: c1.y / 100 * h },
+          c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
+        });
+      }
+      return { d: d, controls: controls };
+    }
+
+    function calcNodeLens() {
+      var path = document.getElementById("journeyCurve");
+      if (!path) return;
+      var total = path.getTotalLength();
+      for (var i = 0; i < pos.length; i++) {
+        var tx = pos[i].x, ty = pos[i].y;
+        var bestL = 0, bestD = Infinity;
+        var N = 300;
+        for (var k = 0; k <= N; k++) {
+          var l = total * k / N;
+          var pt = path.getPointAtLength(l);
+          var d = (pt.x - tx) * (pt.x - tx) + (pt.y - ty) * (pt.y - ty);
+          if (d < bestD) { bestD = d; bestL = l; }
+        }
+        nodeLens[i] = bestL;
+      }
+    }
+
+    function layoutNodes() {
+      var s = size();
+      nodes.forEach(function (n, i) {
+        n.style.left = (pos[i].x / 100 * s.w) + "px";
+        n.style.top = (pos[i].y / 100 * s.h) + "px";
+      });
+      runner.style.left = (pos[0].x / 100 * s.w) + "px";
+      runner.style.top = (pos[0].y / 100 * s.h) + "px";
+      runner.classList.add("facing-left");
+      // rebuild the one-piece spline through all nodes
+      spline = buildSpline(pos, s.w, s.h);
+      var p = document.getElementById("journeyCurve");
+      if (p) p.setAttribute("d", spline.d);
+      calcNodeLens();
+    }
+    layoutNodes();
+    window.addEventListener("resize", function () {
+      token++;
+      playing = false;
+      layoutNodes();
+    });
   })();
 
   // Hero loaded trigger for magic-circle fade-in
