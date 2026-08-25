@@ -653,51 +653,47 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 .journey-runner {
   position: absolute;
   z-index: 10;
-  width: 95px; height: 124px;
-  transform: translate(-50%, -50%);
+  width: 110px; height: 138px;
+  transform: translate(-50%, -42%);
   pointer-events: none;
 }
-.journey-runner.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
-.run-svg {
+.journey-runner.facing-left { transform: translate(-50%, -42%) scaleX(-1); }
+.run-img {
   display: block;
-  width: 95px; height: 124px;
-  overflow: visible;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 6px rgba(60,45,30,.22)) drop-shadow(0 1px 1px rgba(60,45,30,.18));
+  animation: petIdle 3.2s ease-in-out infinite, petSway 5s ease-in-out infinite;
+  transform-origin: 50% 92%;
 }
-.run-svg .run-arm-l, .run-svg .run-arm-r, .run-svg .run-leg-l, .run-svg .run-leg-r {
-  transform-box: fill-box;
-  transform-origin: center top;
+.journey-runner.moving .run-img {
+  animation: petHop 1.4s ease-in-out infinite;
 }
-.journey-runner.running .run-leg-l { animation: runLeg .3s ease-in-out infinite; }
-.journey-runner.running .run-leg-r { animation: runLegB .3s ease-in-out infinite; }
-.journey-runner.running .run-arm-l { animation: runArm .3s ease-in-out infinite; }
-.journey-runner.running .run-arm-r { animation: runArmB .3s ease-in-out infinite; }
-.journey-runner.running .run-svg { animation: runBob .3s ease-in-out infinite; }
-@keyframes runLeg {
-  0% { transform: rotate(45deg); }
-  50% { transform: rotate(-40deg); }
-  100% { transform: rotate(45deg); }
+@keyframes petIdle {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
-@keyframes runLegB {
-  0% { transform: rotate(-40deg); }
-  50% { transform: rotate(45deg); }
-  100% { transform: rotate(-40deg); }
+@keyframes petSway {
+  0%,100% { rotate: -1.5deg; }
+  50% { rotate: 1.5deg; }
 }
-@keyframes runArm {
-  0% { transform: rotate(-35deg); }
-  50% { transform: rotate(40deg); }
-  100% { transform: rotate(-35deg); }
+@keyframes petHop {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
 }
-@keyframes runArmB {
-  0% { transform: rotate(40deg); }
-  50% { transform: rotate(-35deg); }
-  100% { transform: rotate(40deg); }
+/* 落地接触阴影 */
+.journey-runner::after {
+  content: ""; position: absolute; left: 50%; bottom: -6px;
+  width: 70px; height: 10px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(60,45,30,.22), transparent 70%);
+  border-radius: 50%; z-index: -1;
+  animation: shadowPulse 3.2s ease-in-out infinite;
 }
-@keyframes runBob {
-  0% { transform: translateY(0) rotate(-8deg); }
-  50% { transform: translateY(-3px) rotate(-8deg); }
-  100% { transform: translateY(0) rotate(-8deg); }
+@keyframes shadowPulse {
+  0%,100% { opacity: .5; width: 70px; }
+  50% { opacity: .35; width: 58px; }
 }
-.run-svg { transform: rotate(-8deg); }
 
 /* final infinity node */
 .journey-node.jn-final .jn-mark {
@@ -980,111 +976,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       </div>
 
       <div class="journey-runner" id="journeyRunner">
-        <svg class="run-svg" viewBox="0 0 70 92" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="rSkin" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#f5d0b0"/><stop offset="60%" stop-color="#e8b890"/><stop offset="100%" stop-color="#c89870"/>
-            </linearGradient>
-            <linearGradient id="rHair" x1="0" y1="0" x2="0.6" y2="1">
-              <stop offset="0%" stop-color="#2a2018"/><stop offset="50%" stop-color="#1a1510"/><stop offset="100%" stop-color="#0a0805"/>
-            </linearGradient>
-            <linearGradient id="rJacket" x1="0" y1="0" x2="0.5" y2="1">
-              <stop offset="0%" stop-color="#ef4444"/><stop offset="55%" stop-color="#dc2626"/><stop offset="100%" stop-color="#991b1b"/>
-            </linearGradient>
-            <linearGradient id="rPants" x1="0" y1="0" x2="0.4" y2="1">
-              <stop offset="0%" stop-color="#2a2520"/><stop offset="100%" stop-color="#0d0a08"/>
-            </linearGradient>
-          </defs>
-
-          <!-- 速度线 -->
-          <line x1="2" y1="32" x2="18" y2="33" stroke="#f0b24b" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
-          <line x1="0" y1="44" x2="15" y2="45" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round" opacity="0.4"/>
-          <line x1="5" y1="56" x2="16" y2="57" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.32"/>
-
-          <!-- 后臂（红袖，向后甩） -->
-          <g class="run-arm-l">
-            <path d="M26,40 Q14,44 6,54" fill="none" stroke="url(#rJacket)" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="6" cy="55" r="3.5" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.2"/>
-          </g>
-
-          <!-- 后腿（黑裤，向后蹬） -->
-          <g class="run-leg-l">
-            <path d="M34,66 Q20,72 10,78" fill="none" stroke="url(#rPants)" stroke-width="7.5" stroke-linecap="round"/>
-            <path d="M10,78 Q2,78 0,73 Q2,69 13,71 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
-            <path d="M0,73 Q-1,76 1,78" fill="none" stroke="#1a1510" stroke-width="1.3"/>
-          </g>
-
-          <!-- 前腿（黑裤，向前跨） -->
-          <g class="run-leg-r">
-            <path d="M44,66 Q56,68 62,74" fill="none" stroke="url(#rPants)" stroke-width="7.5" stroke-linecap="round"/>
-            <path d="M62,74 Q70,74 71,69 Q68,65 58,67 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
-            <path d="M71,69 Q72,72 70,75" fill="none" stroke="#1a1510" stroke-width="1.3"/>
-          </g>
-
-          <!-- 躯干（红夹克，强前倾，带明暗） -->
-          <path d="M20,42 Q10,54 16,64 L48,64 Q58,56 52,40 Q36,35 20,42 Z" fill="url(#rJacket)" stroke="#1a1510" stroke-width="1.8"/>
-          <!-- 拉链 -->
-          <line x1="35" y1="40" x2="38" y2="64" stroke="#f0b24b" stroke-width="2"/>
-          <!-- 胸口菱形标志 -->
-          <path d="M28,52 L32,48 L36,52 L32,56 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.2"/>
-          <!-- 领口 -->
-          <path d="M30,40 Q35,44 40,40" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
-          <!-- 衣摆后飘 -->
-          <path d="M48,62 Q56,64 58,58 Q53,65 48,65" fill="#dc2626" stroke="#1a1510" stroke-width="1.5"/>
-
-          <!-- 裤腰 -->
-          <path d="M18,60 Q16,65 22,68 L28,68 L28,64 L34,64 L34,68 L40,68 Q45,65 44,60 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
-
-          <!-- 前臂（红袖，向前摆） -->
-          <g class="run-arm-r">
-            <path d="M50,40 Q60,44 62,52" fill="none" stroke="url(#rJacket)" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="62" cy="53" r="3.5" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.2"/>
-          </g>
-
-          <!-- 后扬尖刺黑发（带渐变明暗，多束尖刺向后） -->
-          <path d="M14,26 Q4,14 18,6 Q32,0 44,4 Q60,8 62,22 Q64,32 58,42 Q50,50 42,48 L34,50 Q26,50 20,46 Q14,42 12,34 Q8,28 14,26 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.4"/>
-          <!-- 尖刺1（顶部，长尖刺向后上） -->
-          <path d="M18,6 Q4,0 4,12 Q12,8 20,14 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
-          <!-- 尖刺2 -->
-          <path d="M6,18 Q-4,16 0,30 Q10,22 16,24 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
-          <!-- 尖刺3 -->
-          <path d="M4,30 Q-4,32 0,44 Q10,36 16,36 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
-          <!-- 尖刺4（后下，最长） -->
-          <path d="M8,42 Q0,44 2,54 Q12,46 18,44 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
-          <!-- 发丝高光（暖棕反光） -->
-          <path d="M22,10 Q34,6 46,12" fill="none" stroke="#6a5a4a" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
-          <path d="M18,24 Q24,20 28,28" fill="none" stroke="#5a4a3a" stroke-width="1" opacity="0.4"/>
-
-          <!-- 头部（侧脸，渐变肤色，前探，缩小拉长） -->
-          <path d="M18,28 Q17,14 40,11 Q56,13 56,27 Q56,35 50,39 Q45,41 42,39 Q36,41 30,39 Q19,37 18,31 Z" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.8"/>
-          <!-- 耳 -->
-          <path d="M19,28 Q15,28 16,32 Q18,34 20,32 Z" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.3"/>
-
-          <!-- 前额尖刺刘海 -->
-          <path d="M18,28 Q17,10 40,8 Q56,10 56,28 Q56,21 50,17 Q44,12 42,18 Q38,12 34,17 Q30,12 26,18 Q21,17 18,28 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.4"/>
-          <!-- 鬓角 -->
-          <path d="M18,28 Q16,34 19,40" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.3" stroke-linecap="round"/>
-
-          <!-- 锐利眉（压低，坚毅） -->
-          <path d="M24,23 Q30,21 35,24" fill="none" stroke="#1a1510" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M43,24 Q47,21 53,23" fill="none" stroke="#1a1510" stroke-width="1.8" stroke-linecap="round"/>
-
-          <!-- 锐利窄眼（侧前视） -->
-          <path d="M25,27 Q30,25 34,28 Q30,30 25,28 Z" fill="#1a1510"/>
-          <path d="M43,28 Q47,25 52,27 Q48,30 43,29 Z" fill="#1a1510"/>
-          <circle cx="31" cy="27" r="1.1" fill="#fff"/>
-          <circle cx="48" cy="27" r="1.1" fill="#fff"/>
-
-          <!-- 鼻梁（侧脸轮廓，更锐利） -->
-          <path d="M42,31 Q43,34 41,35 Q39,35 39,34" fill="none" stroke="#c89870" stroke-width="1.3" stroke-linecap="round"/>
-
-          <!-- 嘴（坚毅抿嘴） -->
-          <path d="M35,36 Q38,37 41,36" fill="none" stroke="#9a4a3a" stroke-width="1.5" stroke-linecap="round"/>
-
-          <!-- 下颌角（锐化侧脸） -->
-          <path d="M42,39 Q47,38 52,35" fill="none" stroke="#c89870" stroke-width="1.1" opacity="0.55"/>
-          <path d="M50,39 Q53,38 55,34" fill="none" stroke="#1a1510" stroke-width="0.8" opacity="0.4"/>
-        </svg>
+        <img class="run-img" src="runner.webp" alt="旅程伙伴" draggable="false">
       </div>
 
       <button class="journey-replay" id="journeyReplay">↻ 重新播放</button>
