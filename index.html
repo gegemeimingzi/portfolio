@@ -549,6 +549,11 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   width: 100%; height: 100%;
   pointer-events: none;
 }
+.journey-base {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
 .journey-path path {
   fill: none;
   stroke: var(--accent);
@@ -588,7 +593,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 }
 .journey-node .jn-sub {
   font-size: 11px;
-  color: var(--text-faint);
+  color: #8a8378;
   font-family: var(--font-mono);
   margin-top: 5px;
 }
@@ -648,14 +653,14 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 .journey-runner {
   position: absolute;
   z-index: 10;
-  width: 48px; height: 56px;
+  width: 50px; height: 62px;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
 .journey-runner.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
 .run-svg {
   display: block;
-  width: 48px; height: 56px;
+  width: 50px; height: 62px;
   overflow: visible;
 }
 .run-svg .run-arm-l, .run-svg .run-arm-r, .run-svg .run-leg-l, .run-svg .run-leg-r {
@@ -668,30 +673,31 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 .journey-runner.running .run-arm-r { animation: runArmB .3s ease-in-out infinite; }
 .journey-runner.running .run-svg { animation: runBob .3s ease-in-out infinite; }
 @keyframes runLeg {
-  0% { transform: rotate(35deg); }
-  50% { transform: rotate(-30deg); }
-  100% { transform: rotate(35deg); }
+  0% { transform: rotate(45deg); }
+  50% { transform: rotate(-40deg); }
+  100% { transform: rotate(45deg); }
 }
 @keyframes runLegB {
-  0% { transform: rotate(-30deg); }
-  50% { transform: rotate(35deg); }
-  100% { transform: rotate(-30deg); }
+  0% { transform: rotate(-40deg); }
+  50% { transform: rotate(45deg); }
+  100% { transform: rotate(-40deg); }
 }
 @keyframes runArm {
-  0% { transform: rotate(-25deg); }
-  50% { transform: rotate(30deg); }
-  100% { transform: rotate(-25deg); }
+  0% { transform: rotate(-35deg); }
+  50% { transform: rotate(40deg); }
+  100% { transform: rotate(-35deg); }
 }
 @keyframes runArmB {
-  0% { transform: rotate(30deg); }
-  50% { transform: rotate(-25deg); }
-  100% { transform: rotate(30deg); }
+  0% { transform: rotate(40deg); }
+  50% { transform: rotate(-35deg); }
+  100% { transform: rotate(40deg); }
 }
 @keyframes runBob {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-  100% { transform: translateY(0); }
+  0% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-3px) rotate(-8deg); }
+  100% { transform: translateY(0) rotate(-8deg); }
 }
+.run-svg { transform: rotate(-8deg); }
 
 /* final infinity node */
 .journey-node.jn-final .jn-mark {
@@ -806,7 +812,6 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       <div class="hero-combo">
         <div class="hero-sphere-wrap" id="sphereWrapper">
           <div class="hero-sphere" id="sphere"></div>
-          <span class="sphere-hint">DRAG TO ROTATE</span>
         </div>
         <div class="hero-mascot" aria-hidden="true">
       <svg class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -912,6 +917,9 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       <svg class="journey-path" viewBox="0 0 100 100" preserveAspectRatio="none">
         <path id="journeyCurve" d=""/>
       </svg>
+      <svg class="journey-base" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path id="journeyBase" d="" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.12"/>
+      </svg>
 
       <div class="journey-node" data-x="22" data-y="18">
         <div class="jn-mark">🏫</div>
@@ -972,68 +980,67 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       </div>
 
       <div class="journey-runner" id="journeyRunner">
-        <svg class="run-svg" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
-          <!-- 双肩包（背在身后） -->
-          <rect x="33" y="24" width="13" height="20" rx="3" fill="#c2410c" stroke="#26231d" stroke-width="1.6"/>
-          <path d="M33,30 H46" stroke="#8a2c06" stroke-width="1.4"/>
-          <path d="M33,38 H46" stroke="#8a2c06" stroke-width="1.4"/>
-          <rect x="36" y="21" width="7" height="5" rx="2" fill="#8a2c06" stroke="#26231d" stroke-width="1"/>
-
-          <!-- 后摆手臂 -->
+        <svg class="run-svg" viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg">
+          <!-- 后摆手臂（向后甩） -->
           <g class="run-arm-l">
-            <path d="M21,31 Q13,35 11,43" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="11" cy="44" r="2.5" fill="#f4d2bf" stroke="#26231d" stroke-width="1.2"/>
+            <path d="M22,32 Q12,36 9,46" fill="none" stroke="#d97757" stroke-width="6.5" stroke-linecap="round"/>
+            <circle cx="9" cy="47" r="3" fill="#f4d2bf" stroke="#403D39" stroke-width="1.3"/>
           </g>
 
-          <!-- 腿（先画，短裤盖住裤腿顶部） -->
+          <!-- 后腿（向后蹬，错开高度） -->
           <g class="run-leg-l">
-            <path d="M26,58 Q20,62 24,66" fill="none" stroke="#31313a" stroke-width="6" stroke-linecap="round"/>
-            <path d="M21,65 Q26,64 31,65 L31,68 Q26,70 21,66 Z" fill="#f4f1e8" stroke="#26231d" stroke-width="1.3"/>
-          </g>
-          <g class="run-leg-r">
-            <path d="M34,58 Q40,62 36,66" fill="none" stroke="#31313a" stroke-width="6" stroke-linecap="round"/>
-            <path d="M31,65 Q34,64 37,65 Q41,65 40,68 Q33,70 31,68 Z" fill="#f4f1e8" stroke="#26231d" stroke-width="1.3"/>
+            <path d="M28,58 Q20,62 16,68" fill="none" stroke="#56514B" stroke-width="6.5" stroke-linecap="round"/>
+            <ellipse cx="15" cy="69" rx="6" ry="3.2" fill="#E5DDD3" stroke="#403D39" stroke-width="1.4"/>
           </g>
 
-          <!-- 躯干（橙T恤 + 领子 + 徽章） -->
-          <path d="M20,29 Q17,42 22,50 L38,50 Q43,42 40,29 Q30,25 20,29 Z" fill="#d97757" stroke="#26231d" stroke-width="2"/>
-          <path d="M24,29 L30,35 L36,29" fill="none" stroke="#26231d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="30" cy="42" r="2" fill="#fff" stroke="#26231d" stroke-width="1.1"/>
+          <!-- 前腿（向前跨，膝盖弯曲） -->
+          <g class="run-leg-r">
+            <path d="M34,58 Q42,60 40,66" fill="none" stroke="#56514B" stroke-width="6.5" stroke-linecap="round"/>
+            <ellipse cx="40" cy="67" rx="6" ry="3.2" fill="#E5DDD3" stroke="#403D39" stroke-width="1.4"/>
+          </g>
+
+          <!-- 双肩包（背在身后，跑步时露出） -->
+          <rect x="33" y="26" width="13" height="20" rx="3" fill="#c2410c" stroke="#403D39" stroke-width="1.6"/>
+          <path d="M33,32 H46" stroke="#8a2c06" stroke-width="1.4"/>
+          <rect x="36" y="22" width="7" height="5" rx="2" fill="#8a2c06" stroke="#403D39" stroke-width="1"/>
+
+          <!-- 躯干（前倾 + 橙T恤） -->
+          <path d="M19,30 Q14,42 20,50 L38,52 Q46,44 41,29 Q30,25 19,30 Z" fill="#d97757" stroke="#403D39" stroke-width="2"/>
+          <path d="M23,30 L30,36 L37,30" fill="none" stroke="#403D39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30" cy="43" r="2" fill="#fff" stroke="#403D39" stroke-width="1.1"/>
 
           <!-- 短裤 -->
-          <path d="M22,50 Q21,55 24,58 L27,58 L27,53 L33,53 L33,58 L36,58 Q39,55 38,50 Z" fill="#31313a" stroke="#26231d" stroke-width="2"/>
+          <path d="M20,50 Q19,55 24,58 L28,58 L28,53 L32,53 L32,58 L36,58 Q41,55 40,50 Z" fill="#3D3B38" stroke="#403D39" stroke-width="1.8"/>
 
-          <!-- 前摆手臂 -->
+          <!-- 前摆手臂（向前摆，曲肘） -->
           <g class="run-arm-r">
-            <path d="M39,31 Q47,35 48,42" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="48" cy="43" r="2.5" fill="#f4d2bf" stroke="#26231d" stroke-width="1.2"/>
+            <path d="M40,32 Q48,36 49,44" fill="none" stroke="#d97757" stroke-width="6.5" stroke-linecap="round"/>
+            <circle cx="49" cy="45" r="3" fill="#f4d2bf" stroke="#403D39" stroke-width="1.3"/>
           </g>
 
-          <!-- 后身长发（垂到肩后，跑步时向后飘） -->
-          <path d="M13,13 Q10,2 30,0 Q50,2 47,13 Q49,21 45,30 Q42,37 35,39 Q30,41 25,39 Q18,37 15,30 Q11,21 13,13 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.8"/>
-          <path d="M19,30 Q30,26 41,30" fill="none" stroke="#4a3a30" stroke-width="1.2" opacity="0.6"/>
+          <!-- 后身长发（飘起，向后扬） -->
+          <path d="M13,13 Q9,2 30,0 Q51,2 47,13 Q49,21 45,30 Q42,37 35,39 Q30,41 25,39 Q18,37 15,30 Q11,21 13,13 Z" fill="#2c2420" stroke="#403D39" stroke-width="1.8"/>
           <path d="M20,6 Q30,3.5 40,6" fill="none" stroke="#4a3a30" stroke-width="1.3" stroke-linecap="round"/>
 
-          <!-- 头（Q版大头）+ 耳朵 -->
-          <ellipse cx="30" cy="15" rx="16" ry="13.5" fill="#f4d2bf" stroke="#26231d" stroke-width="2.2"/>
-          <ellipse cx="14" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#26231d" stroke-width="1.6"/>
-          <ellipse cx="46" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#26231d" stroke-width="1.6"/>
+          <!-- 头（Q版大头，略微前探） -->
+          <ellipse cx="30" cy="15" rx="16" ry="13.5" fill="#f4d2bf" stroke="#403D39" stroke-width="2.2"/>
+          <ellipse cx="14" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#403D39" stroke-width="1.6"/>
+          <ellipse cx="46" cy="16" rx="3" ry="3.8" fill="#f4d2bf" stroke="#403D39" stroke-width="1.6"/>
 
           <!-- 额前刘海 -->
-          <path d="M14,12.5 Q13,3 30,1.5 Q47,3 46,12.5 Q46,11 43,10 Q39,8 36,10 Q34,8 30,9.5 Q26,8 24,10 Q21,8 17,10 Q14,11 14,12.5 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.8"/>
-          <!-- 垂在肩前的长发缕（框住脸） -->
-          <path d="M14,12 Q11,22 15,30 Q12,22 16,15 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.5"/>
-          <path d="M46,12 Q49,22 45,30 Q48,22 44,15 Z" fill="#2c2420" stroke="#26231d" stroke-width="1.5"/>
+          <path d="M14,12.5 Q13,3 30,1.5 Q47,3 46,12.5 Q46,11 43,10 Q39,8 36,10 Q34,8 30,9.5 Q26,8 24,10 Q21,8 17,10 Q14,11 14,12.5 Z" fill="#2c2420" stroke="#403D39" stroke-width="1.8"/>
+          <path d="M14,12 Q11,22 15,30 Q12,22 16,15 Z" fill="#2c2420" stroke="#403D39" stroke-width="1.5"/>
+          <path d="M46,12 Q49,22 45,30 Q48,22 44,15 Z" fill="#2c2420" stroke="#403D39" stroke-width="1.5"/>
 
           <!-- 圆框眼镜 -->
-          <circle cx="22.5" cy="18" r="4.6" fill="none" stroke="#26231d" stroke-width="1.6"/>
-          <circle cx="37.5" cy="18" r="4.6" fill="none" stroke="#26231d" stroke-width="1.6"/>
-          <line x1="27.1" y1="18" x2="32.9" y2="18" stroke="#26231d" stroke-width="1.6"/>
-          <line x1="17.9" y1="18" x2="14" y2="18.6" stroke="#26231d" stroke-width="1.5"/>
+          <circle cx="22.5" cy="18" r="4.6" fill="none" stroke="#403D39" stroke-width="1.6"/>
+          <circle cx="37.5" cy="18" r="4.6" fill="none" stroke="#403D39" stroke-width="1.6"/>
+          <line x1="27.1" y1="18" x2="32.9" y2="18" stroke="#403D39" stroke-width="1.6"/>
+          <line x1="17.9" y1="18" x2="14" y2="18.6" stroke="#403D39" stroke-width="1.5"/>
 
           <!-- 眼睛 + 高光 -->
-          <ellipse cx="22.5" cy="18.5" rx="2.1" ry="2.5" fill="#26231d"/>
-          <ellipse cx="37.5" cy="18.5" rx="2.1" ry="2.5" fill="#26231d"/>
+          <ellipse cx="22.5" cy="18.5" rx="2.1" ry="2.5" fill="#2c2420"/>
+          <ellipse cx="37.5" cy="18.5" rx="2.1" ry="2.5" fill="#2c2420"/>
           <circle cx="23.3" cy="17.4" r="0.8" fill="#fff"/>
           <circle cx="38.3" cy="17.4" r="0.8" fill="#fff"/>
 
@@ -1590,7 +1597,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       { text: "我永远喜欢在青山的时光！" },
       { text: "没想到吧，GLM的唐杰师兄是我的老学长~" },
       { text: "SUSE的时光无忧无虑，真好！" },
-      { text: "终于来到了小时候的梦中情校，I ❤ SZU，不过化腾学者能不能给我发一张offer~" },
+      { text: "终于来到了小时候的梦中情校，I ❤ SZU，不过化腾学长能不能给我发一张offer~" },
       { text: "第一次实习，领到第一份工资啦~" },
       { text: "见到了大公司是如何运转，谢谢荣耀！" },
       { text: "军儿给我机会看看首都，哈哈哈，在小米真的学到很多呀！" },
@@ -1804,6 +1811,8 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       spline = buildSpline(pos, s.w, s.h);
       var p = document.getElementById("journeyCurve");
       if (p) p.setAttribute("d", spline.d);
+      var pb = document.getElementById("journeyBase");
+      if (pb) pb.setAttribute("d", spline.d);
       calcNodeLens();
     }
     layoutNodes();
