@@ -724,14 +724,14 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   0%,100% { opacity: .5; width: 58px; }
   50% { opacity: .32; width: 46px; }
 }
-/* 拖尾残影 */
-.run-trail { position: absolute; inset: 0; pointer-events: none; z-index: 9; }
-.run-trail .trail-ghost {
-  position: absolute; width: 80px; height: 100px;
-  object-fit: contain; opacity: 0; pointer-events: none;
-  transform: translate(-50%, -42%);
-  filter: drop-shadow(0 0 4px rgba(217,119,87,.5));
+/* 彩虹粒子拖尾 */
+.run-trail { position: absolute; inset: 0; pointer-events: none; z-index: 9; overflow: hidden; }
+.trail-spark {
+  position: absolute; width: 8px; height: 8px;
+  border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
   will-change: opacity, transform;
+  box-shadow: 0 0 8px currentColor;
 }
 
 /* final infinity node */
@@ -1017,13 +1017,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       <div class="journey-runner" id="journeyRunner">
         <img class="run-img" src="runner.webp" alt="旅程伙伴" draggable="false">
       </div>
-      <div class="run-trail" id="runTrail" aria-hidden="true">
-        <img class="trail-ghost" src="runner.webp" draggable="false">
-        <img class="trail-ghost" src="runner.webp" draggable="false">
-        <img class="trail-ghost" src="runner.webp" draggable="false">
-        <img class="trail-ghost" src="runner.webp" draggable="false">
-        <img class="trail-ghost" src="runner.webp" draggable="false">
-      </div>
+      <div class="run-trail" id="runTrail" aria-hidden="true"></div>
 
       <button class="journey-replay" id="journeyReplay">↻ 重新播放</button>
     </div>
@@ -1564,26 +1558,37 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
     var stage = document.getElementById("journeyStage");
     var runner = document.getElementById("journeyRunner");
     var replayBtn = document.getElementById("journeyReplay");
-    var trailGhosts = document.querySelectorAll("#runTrail .trail-ghost");
-    var trailIdx = 0;
-    var trailCount = trailGhosts.length;
+    var trailBox = document.getElementById("runTrail");
+    var SPARK_COLORS = ["#dc2626","#f0b24b","#22d3a7","#34d1ff","#a78bfa","#f472b6","#fde047"];
     var lastTrailTime = 0;
     function pushTrail(x, y, facingLeft) {
       var now = performance.now();
-      if (now - lastTrailTime < 55) return; // throttle
+      if (now - lastTrailTime < 42) return;
       lastTrailTime = now;
-      var g = trailGhosts[trailIdx];
-      trailIdx = (trailIdx + 1) % trailCount;
-      g.style.left = x + "px";
-      g.style.top = y + "px";
-      g.style.transform = "translate(-50%, -42%)" + (facingLeft ? " scaleX(-1)" : "");
-      g.style.opacity = "0.38";
-      g.style.transition = "none";
-      // fade out
-      requestAnimationFrame(function () {
-        g.style.transition = "opacity .7s ease-out";
-        g.style.opacity = "0";
-      });
+      // emit 3 spark particles per tick for a denser rainbow trail
+      for (var k = 0; k < 3; k++) {
+        var sp = document.createElement("div");
+        sp.className = "trail-spark";
+        var col = SPARK_COLORS[(Math.random() * SPARK_COLORS.length) | 0];
+        sp.style.color = col;
+        sp.style.background = col;
+        // position at runner feet, offset slightly behind by facing direction
+        var offX = facingLeft ? 6 : -6;
+        sp.style.left = (x + offX + (Math.random()*10-5)) + "px";
+        sp.style.top = (y + 12 + (Math.random()*8-2)) + "px";
+        sp.style.opacity = "0.7";
+        var size = 5 + Math.random()*4;
+        sp.style.width = size + "px"; sp.style.height = size + "px";
+        trailBox.appendChild(sp);
+        // animate: rise + drift back + fade
+        var drift = (facingLeft ? 1 : -1) * (8 + Math.random()*12);
+        requestAnimationFrame(function () {
+          sp.style.transition = "opacity 1.1s ease-out, transform 1.1s ease-out";
+          sp.style.transform = "translate(calc(-50% + " + drift + "px), -24px) scale(0.3)";
+          sp.style.opacity = "0";
+        });
+        setTimeout(function () { if (sp.parentNode) sp.parentNode.removeChild(sp); }, 1150);
+      }
     }
     if (!stage || !runner || !replayBtn) return;
     var nodes = Array.prototype.slice.call(stage.querySelectorAll(".journey-node"));
@@ -1776,15 +1781,14 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
         });
       }
-      // extend the road past the last node toward the edge — "路无尽头"
+      // extend the road past the last node — keep the snake zig-zag going down, fading
       var last = pts[pts.length - 1];
-      var prev = pts[pts.length - 2];
-      var dx = last.x - prev.x, dy = last.y - prev.y;
-      var ext1 = { x: last.x + dx * 0.6, y: last.y + dy * 0.6 };
-      var ext2 = { x: ext1.x + dx * 0.5, y: Math.min(98, ext1.y + dy * 0.5) };
-      d += " Q" + ext1.x.toFixed(2) + "," + ext1.y.toFixed(2) +
-           " " + ext2.x.toFixed(2) + "," + ext2.y.toFixed(2);
-      d += " T" + Math.min(99, ext2.x + 8) + "," + Math.min(99, ext2.y + 4);
+      // zig left then right, continuing the rhythm, toward the bottom edge
+      var extA = { x: 22, y: 95 };
+      var extB = { x: 78, y: 100 };
+      d += " Q" + last.x + "," + ((last.y + extA.y) / 2).toFixed(2) +
+           " " + extA.x + "," + extA.y;
+      d += " Q50," + ((extA.y + extB.y) / 2).toFixed(2) + " " + extB.x + "," + extB.y;
       return { d: d, controls: controls };
     }
 
