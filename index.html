@@ -724,6 +724,15 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   0%,100% { opacity: .5; width: 58px; }
   50% { opacity: .32; width: 46px; }
 }
+/* 拖尾残影 */
+.run-trail { position: absolute; inset: 0; pointer-events: none; z-index: 9; }
+.run-trail .trail-ghost {
+  position: absolute; width: 80px; height: 100px;
+  object-fit: contain; opacity: 0; pointer-events: none;
+  transform: translate(-50%, -42%);
+  filter: drop-shadow(0 0 4px rgba(217,119,87,.5));
+  will-change: opacity, transform;
+}
 
 /* final infinity node */
 .journey-node.jn-final .jn-mark {
@@ -1007,6 +1016,13 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 
       <div class="journey-runner" id="journeyRunner">
         <img class="run-img" src="runner.webp" alt="旅程伙伴" draggable="false">
+      </div>
+      <div class="run-trail" id="runTrail" aria-hidden="true">
+        <img class="trail-ghost" src="runner.webp" draggable="false">
+        <img class="trail-ghost" src="runner.webp" draggable="false">
+        <img class="trail-ghost" src="runner.webp" draggable="false">
+        <img class="trail-ghost" src="runner.webp" draggable="false">
+        <img class="trail-ghost" src="runner.webp" draggable="false">
       </div>
 
       <button class="journey-replay" id="journeyReplay">↻ 重新播放</button>
@@ -1548,6 +1564,27 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
     var stage = document.getElementById("journeyStage");
     var runner = document.getElementById("journeyRunner");
     var replayBtn = document.getElementById("journeyReplay");
+    var trailGhosts = document.querySelectorAll("#runTrail .trail-ghost");
+    var trailIdx = 0;
+    var trailCount = trailGhosts.length;
+    var lastTrailTime = 0;
+    function pushTrail(x, y, facingLeft) {
+      var now = performance.now();
+      if (now - lastTrailTime < 55) return; // throttle
+      lastTrailTime = now;
+      var g = trailGhosts[trailIdx];
+      trailIdx = (trailIdx + 1) % trailCount;
+      g.style.left = x + "px";
+      g.style.top = y + "px";
+      g.style.transform = "translate(-50%, -42%)" + (facingLeft ? " scaleX(-1)" : "");
+      g.style.opacity = "0.38";
+      g.style.transition = "none";
+      // fade out
+      requestAnimationFrame(function () {
+        g.style.transition = "opacity .7s ease-out";
+        g.style.opacity = "0";
+      });
+    }
     if (!stage || !runner || !replayBtn) return;
     var nodes = Array.prototype.slice.call(stage.querySelectorAll(".journey-node"));
 
@@ -1590,8 +1627,12 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
         if (!start) start = ts;
         var p = Math.min((ts - start) / dur, 1);
         var pt = path.getPointAtLength(lenFrom + (lenTo - lenFrom) * p);
-        runner.style.left = (pt.x / 100 * s.w) + "px";
-        runner.style.top = (pt.y / 100 * s.h) + "px";
+        var px = pt.x / 100 * s.w, py = pt.y / 100 * s.h;
+        runner.style.left = px + "px";
+        runner.style.top = py + "px";
+        if (runner.classList.contains("running")) {
+          pushTrail(px, py, runner.classList.contains("facing-left"));
+        }
         if (p < 1) requestAnimationFrame(step);
         else { runner.classList.remove("running"); done(); }
       }
@@ -1735,6 +1776,15 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
         });
       }
+      // extend the road past the last node toward the edge — "路无尽头"
+      var last = pts[pts.length - 1];
+      var prev = pts[pts.length - 2];
+      var dx = last.x - prev.x, dy = last.y - prev.y;
+      var ext1 = { x: last.x + dx * 0.6, y: last.y + dy * 0.6 };
+      var ext2 = { x: ext1.x + dx * 0.5, y: Math.min(98, ext1.y + dy * 0.5) };
+      d += " Q" + ext1.x.toFixed(2) + "," + ext1.y.toFixed(2) +
+           " " + ext2.x.toFixed(2) + "," + ext2.y.toFixed(2);
+      d += " T" + Math.min(99, ext2.x + 8) + "," + Math.min(99, ext2.y + 4);
       return { d: d, controls: controls };
     }
 
