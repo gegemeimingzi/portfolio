@@ -1781,9 +1781,12 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
         });
       }
-      // extend the road past the last node — straight down, fading
+      // extend the road past the last node — continue the snake rhythm half a segment, then stop (no node), fading
       var last = pts[pts.length - 1];
-      d += " L" + last.x.toFixed(2) + ",95";
+      // next snake point would zig left (from 78 to 22), draw halfway to it
+      var nextTarget = { x: 22, y: 95 };
+      var half = { x: last.x + (nextTarget.x - last.x) * 0.5, y: last.y + (nextTarget.y - last.y) * 0.5 };
+      d += " Q" + last.x + "," + ((last.y + half.y) / 2).toFixed(2) + " " + half.x.toFixed(2) + "," + half.y.toFixed(2);
       return { d: d, controls: controls };
     }
 
