@@ -1781,14 +1781,12 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
         });
       }
-      // extend the road past the last node — keep the snake zig-zag going down, fading
+      // extend the road past the last node — short snake tail fading out
       var last = pts[pts.length - 1];
-      // zig left then right, continuing the rhythm, toward the bottom edge
-      var extA = { x: 22, y: 95 };
-      var extB = { x: 78, y: 100 };
+      var extA = { x: 30, y: 94 };
       d += " Q" + last.x + "," + ((last.y + extA.y) / 2).toFixed(2) +
            " " + extA.x + "," + extA.y;
-      d += " Q50," + ((extA.y + extB.y) / 2).toFixed(2) + " " + extB.x + "," + extB.y;
+      d += " Q45,98 58,100";
       return { d: d, controls: controls };
     }
 
