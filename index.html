@@ -1781,12 +1781,12 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           c2: { x: c2.x / 100 * w, y: c2.y / 100 * h }
         });
       }
-      // extend the road past the last node — short snake tail fading out
+      // extend the road past the last node — half a segment straight on, fading
       var last = pts[pts.length - 1];
-      var extA = { x: 30, y: 94 };
-      d += " Q" + last.x + "," + ((last.y + extA.y) / 2).toFixed(2) +
-           " " + extA.x + "," + extA.y;
-      d += " Q45,98 58,100";
+      var prev = pts[pts.length - 2];
+      var dx = last.x - prev.x, dy = last.y - prev.y;
+      var ext = { x: last.x + dx * 0.5, y: last.y + dy * 0.5 };
+      d += " L" + ext.x.toFixed(2) + "," + ext.y.toFixed(2);
       return { d: d, controls: controls };
     }
 
