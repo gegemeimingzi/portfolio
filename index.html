@@ -653,14 +653,14 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 .journey-runner {
   position: absolute;
   z-index: 10;
-  width: 82px; height: 100px;
+  width: 90px; height: 118px;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
 .journey-runner.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
 .run-svg {
   display: block;
-  width: 82px; height: 100px;
+  width: 90px; height: 118px;
   overflow: visible;
 }
 .run-svg .run-arm-l, .run-svg .run-arm-r, .run-svg .run-leg-l, .run-svg .run-leg-r {
@@ -980,73 +980,95 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       </div>
 
       <div class="journey-runner" id="journeyRunner">
-        <svg class="run-svg" viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg">
-          <!-- 后摆手臂 -->
+        <svg class="run-svg" viewBox="0 0 64 84" xmlns="http://www.w3.org/2000/svg">
+          <!-- 速度线（向后延伸，强化街头跑动感） -->
+          <line x1="2" y1="28" x2="14" y2="29" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+          <line x1="0" y1="38" x2="12" y2="39" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+          <line x1="4" y1="48" x2="14" y2="49" stroke="#dc2626" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+
+          <!-- 后摆手臂（夹克袖，向后甩） -->
           <g class="run-arm-l">
-            <path d="M22,34 Q12,38 10,48" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="10" cy="49" r="3" fill="#fde3d0" stroke="#3a3530" stroke-width="1.2"/>
+            <path d="M24,34 Q12,38 8,46" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
+            <path d="M8,46 Q9,48 11,47" fill="none" stroke="#f0b24b" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="11" cy="48" r="3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 后腿 -->
+          <!-- 后腿（黑裤 + 大黄鞋，向后蹬） -->
           <g class="run-leg-l">
-            <path d="M27,58 Q19,62 15,69" fill="none" stroke="#4a4540" stroke-width="6" stroke-linecap="round"/>
-            <ellipse cx="14" cy="70" rx="6" ry="3" fill="#c9a062" stroke="#3a3530" stroke-width="1.2"/>
+            <path d="M30,58 Q18,62 10,68" fill="none" stroke="#1a1510" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M10,68 Q2,68 0,64 Q2,60 12,62 L14,68 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
+            <path d="M0,64 Q-1,66 0,68" fill="none" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 前腿 -->
+          <!-- 前腿（黑裤 + 大黄鞋，向前跨） -->
           <g class="run-leg-r">
-            <path d="M34,58 Q42,60 41,66" fill="none" stroke="#4a4540" stroke-width="6" stroke-linecap="round"/>
-            <ellipse cx="41" cy="67" rx="6" ry="3" fill="#c9a062" stroke="#3a3530" stroke-width="1.2"/>
+            <path d="M36,58 Q48,60 52,66" fill="none" stroke="#1a1510" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M52,66 Q60,66 62,62 Q60,58 50,60 L48,66 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
+            <path d="M62,62 Q63,64 62,68" fill="none" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 双肩包 -->
-          <rect x="33" y="26" width="13" height="20" rx="3" fill="#c2410c" stroke="#3a3530" stroke-width="1.4"/>
-          <rect x="36" y="22" width="7" height="5" rx="2" fill="#8a2c06" stroke="#3a3530" stroke-width="1"/>
+          <!-- 躯干（红色夹克，强前倾） -->
+          <path d="M16,34 Q8,46 14,54 L40,54 Q49,46 44,31 Q30,27 16,34 Z" fill="#dc2626" stroke="#1a1510" stroke-width="2"/>
+          <!-- 黄色拉链条纹（街头感） -->
+          <line x1="31" y1="31" x2="33" y2="54" stroke="#f0b24b" stroke-width="2"/>
+          <!-- 胸前涂鸦标志 -->
+          <path d="M25,43 L29,39 L33,43 L29,47 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.2"/>
+          <!-- 衣摆后飘 -->
+          <path d="M40,52 Q47,54 50,50 Q46,55 40,55" fill="#dc2626" stroke="#1a1510" stroke-width="1.6"/>
 
-          <!-- 躯干 -->
-          <path d="M19,31 Q14,43 20,51 L38,52 Q46,44 41,30 Q30,26 19,31 Z" fill="#d97757" stroke="#3a3530" stroke-width="1.8"/>
-          <path d="M23,31 L30,37 L37,31" fill="none" stroke="#3a3530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- 黑裤腰 -->
+          <path d="M18,50 Q17,55 22,58 L26,58 L26,54 L30,54 L30,58 L34,58 Q39,55 38,50 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.5"/>
 
-          <!-- 短裤 -->
-          <path d="M20,50 Q19,55 24,58 L28,58 L28,53 L32,53 L32,58 L36,58 Q41,55 40,50 Z" fill="#3a3530" stroke="#2a2520" stroke-width="1.6"/>
-
-          <!-- 前摆手臂 -->
+          <!-- 前摆手臂（夹克袖，向前摆） -->
           <g class="run-arm-r">
-            <path d="M40,32 Q48,36 50,44" fill="none" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="50" cy="45" r="3" fill="#fde3d0" stroke="#3a3530" stroke-width="1.2"/>
+            <path d="M44,32 Q52,36 54,44" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
+            <path d="M54,44 Q53,46 51,45" fill="none" stroke="#f0b24b" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="51" cy="46" r="3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 后身长发（动漫风：飘扬的柔顺长发） -->
-          <path d="M13,14 Q8,4 30,2 Q52,4 47,14 Q50,24 46,34 Q43,42 36,42 Q30,44 24,42 Q17,42 14,34 Q10,24 13,14 Z" fill="#2a2018" stroke="#3a3530" stroke-width="1.6"/>
-          <!-- 发丝高光 -->
-          <path d="M20,8 Q30,5 40,8" fill="none" stroke="#5a4a3a" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
-          <path d="M18,20 Q22,18 26,22" fill="none" stroke="#5a4a3a" stroke-width="1" opacity="0.5"/>
+          <!-- 后扬尖刺黑发（打破圆形，明显的尖刺发束向后飞扬） -->
+          <!-- 主发块（后脑拉长，非圆形） -->
+          <path d="M14,20 Q8,12 14,8 Q24,4 34,4 Q48,4 52,14 Q55,22 52,30 Q49,38 44,42 L40,44 Q36,46 32,44 L28,46 Q24,44 20,42 Q15,38 13,32 Q10,26 14,20 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
+          <!-- 尖刺发束1（顶部，长尖刺向后上） -->
+          <path d="M14,8 Q4,4 6,12 Q10,10 16,14 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
+          <!-- 尖刺发束2（后上，长尖刺） -->
+          <path d="M8,16 Q-2,14 0,24 Q8,20 14,22 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
+          <!-- 尖刺发束3（后中，尖刺向后） -->
+          <path d="M6,26 Q-2,28 0,36 Q8,32 14,32 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
+          <!-- 尖刺发束4（后下，最长尖刺向后下） -->
+          <path d="M8,36 Q0,38 2,46 Q10,42 16,40 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
+          <!-- 发丝高光（暖棕，避免死黑） -->
+          <path d="M20,10 Q30,7 40,11" fill="none" stroke="#5a4a3a" stroke-width="1.3" stroke-linecap="round" opacity="0.65"/>
+          <path d="M18,24 Q24,20 28,26" fill="none" stroke="#5a4a3a" stroke-width="1" opacity="0.5"/>
 
-          <!-- 头（动漫 Q 版） -->
-          <ellipse cx="30" cy="16" rx="15.5" ry="13" fill="#fde3d0" stroke="#3a3530" stroke-width="1.8"/>
-          <ellipse cx="15" cy="17" rx="2.8" ry="3.5" fill="#fde3d0" stroke="#3a3530" stroke-width="1.4"/>
-          <ellipse cx="45" cy="17" rx="2.8" ry="3.5" fill="#fde3d0" stroke="#3a3530" stroke-width="1.4"/>
+          <!-- 头部（动漫少年，略前探） -->
+          <ellipse cx="34" cy="17" rx="14.5" ry="12" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.8"/>
+          <ellipse cx="20" cy="18" rx="2.6" ry="3.3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.4"/>
+          <ellipse cx="48" cy="18" rx="2.6" ry="3.3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.4"/>
 
-          <!-- 动漫风刘海（柔和曲线，非锯齿） -->
-          <path d="M16,13 Q15,4 30,2 Q45,4 44,13 Q44,10 40,9 Q36,7 33,10 Q31,7 28,9 Q25,7 22,10 Q18,10 16,13 Z" fill="#2a2018" stroke="#3a3530" stroke-width="1.5"/>
-          <path d="M16,13 Q13,22 17,30" fill="none" stroke="#2a2018" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M44,13 Q47,22 43,30" fill="none" stroke="#2a2018" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- 前额尖刺刘海 -->
+          <path d="M20,14 Q19,4 34,2 Q49,4 48,14 Q48,11 44,10 Q40,8 37,11 Q35,8 32,10 Q29,8 26,11 Q22,11 20,14 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
+          <!-- 鬓角碎发 -->
+          <path d="M20,14 Q18,20 21,26" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M48,14 Q50,20 47,26" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4" stroke-linecap="round"/>
 
-          <!-- 动漫大眼睛（闪亮） -->
-          <ellipse cx="23" cy="18" rx="4.2" ry="5.2" fill="#3a3530"/>
-          <ellipse cx="37" cy="18" rx="4.2" ry="5.2" fill="#3a3530"/>
-          <!-- 瞳孔高光（动漫闪亮感） -->
-          <circle cx="24" cy="16" r="1.8" fill="#fff"/>
-          <circle cx="38" cy="16" r="1.8" fill="#fff"/>
-          <circle cx="22" cy="20" r="0.8" fill="#fff" opacity="0.85"/>
-          <circle cx="36" cy="20" r="0.8" fill="#fff" opacity="0.85"/>
+          <!-- 锐利眉毛（压低，坚毅感） -->
+          <path d="M22,12 Q27,11 30,13" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M38,13 Q41,11 46,12" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
 
-          <!-- 小嘴（动漫微笑） -->
-          <path d="M28,24 Q30,25.5 32,24" fill="none" stroke="#b06a52" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- 动漫锐利眼睛（专注前视，眼尾上挑） -->
+          <path d="M24,16 Q27,14 30,17 Q27,20 24,18 Z" fill="#1a1510"/>
+          <path d="M38,17 Q41,14 44,16 Q41,20 38,18 Z" fill="#1a1510"/>
+          <!-- 眼神高光 -->
+          <circle cx="27" cy="16" r="1.2" fill="#fff"/>
+          <circle cx="41" cy="16" r="1.2" fill="#fff"/>
 
-          <!-- 腮红 -->
-          <ellipse cx="18" cy="22" rx="2.8" ry="1.8" fill="#f0a890" opacity="0.55"/>
-          <ellipse cx="42" cy="22" rx="2.8" ry="1.8" fill="#f0a890" opacity="0.55"/>
+          <!-- 坚毅嘴角 -->
+          <path d="M30,23 Q33,24 36,23" fill="none" stroke="#a05040" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- 暖色腮红 -->
+          <ellipse cx="22" cy="21" rx="2.5" ry="1.5" fill="#f0a890" opacity="0.45"/>
+          <ellipse cx="46" cy="21" rx="2.5" ry="1.5" fill="#f0a890" opacity="0.45"/>
         </svg>
       </div>
 
