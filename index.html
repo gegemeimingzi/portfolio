@@ -653,14 +653,14 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 .journey-runner {
   position: absolute;
   z-index: 10;
-  width: 90px; height: 118px;
+  width: 95px; height: 124px;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
 .journey-runner.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
 .run-svg {
   display: block;
-  width: 90px; height: 118px;
+  width: 95px; height: 124px;
   overflow: visible;
 }
 .run-svg .run-arm-l, .run-svg .run-arm-r, .run-svg .run-leg-l, .run-svg .run-leg-r {
@@ -980,95 +980,110 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       </div>
 
       <div class="journey-runner" id="journeyRunner">
-        <svg class="run-svg" viewBox="0 0 64 84" xmlns="http://www.w3.org/2000/svg">
-          <!-- 速度线（向后延伸，强化街头跑动感） -->
-          <line x1="2" y1="28" x2="14" y2="29" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
-          <line x1="0" y1="38" x2="12" y2="39" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
-          <line x1="4" y1="48" x2="14" y2="49" stroke="#dc2626" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+        <svg class="run-svg" viewBox="0 0 70 92" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="rSkin" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f5d0b0"/><stop offset="60%" stop-color="#e8b890"/><stop offset="100%" stop-color="#c89870"/>
+            </linearGradient>
+            <linearGradient id="rHair" x1="0" y1="0" x2="0.6" y2="1">
+              <stop offset="0%" stop-color="#2a2018"/><stop offset="50%" stop-color="#1a1510"/><stop offset="100%" stop-color="#0a0805"/>
+            </linearGradient>
+            <linearGradient id="rJacket" x1="0" y1="0" x2="0.5" y2="1">
+              <stop offset="0%" stop-color="#ef4444"/><stop offset="55%" stop-color="#dc2626"/><stop offset="100%" stop-color="#991b1b"/>
+            </linearGradient>
+            <linearGradient id="rPants" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0%" stop-color="#2a2520"/><stop offset="100%" stop-color="#0d0a08"/>
+            </linearGradient>
+          </defs>
 
-          <!-- 后摆手臂（夹克袖，向后甩） -->
+          <!-- 速度线 -->
+          <line x1="2" y1="32" x2="18" y2="33" stroke="#f0b24b" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
+          <line x1="0" y1="44" x2="15" y2="45" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round" opacity="0.4"/>
+          <line x1="5" y1="56" x2="16" y2="57" stroke="#f0b24b" stroke-width="2" stroke-linecap="round" opacity="0.32"/>
+
+          <!-- 后臂（红袖，向后甩） -->
           <g class="run-arm-l">
-            <path d="M24,34 Q12,38 8,46" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
-            <path d="M8,46 Q9,48 11,47" fill="none" stroke="#f0b24b" stroke-width="7" stroke-linecap="round"/>
-            <circle cx="11" cy="48" r="3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.2"/>
+            <path d="M26,40 Q14,44 6,54" fill="none" stroke="url(#rJacket)" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="6" cy="55" r="3.5" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 后腿（黑裤 + 大黄鞋，向后蹬） -->
+          <!-- 后腿（黑裤，向后蹬） -->
           <g class="run-leg-l">
-            <path d="M30,58 Q18,62 10,68" fill="none" stroke="#1a1510" stroke-width="6.5" stroke-linecap="round"/>
-            <path d="M10,68 Q2,68 0,64 Q2,60 12,62 L14,68 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
-            <path d="M0,64 Q-1,66 0,68" fill="none" stroke="#1a1510" stroke-width="1.2"/>
+            <path d="M34,66 Q20,72 10,78" fill="none" stroke="url(#rPants)" stroke-width="7.5" stroke-linecap="round"/>
+            <path d="M10,78 Q2,78 0,73 Q2,69 13,71 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
+            <path d="M0,73 Q-1,76 1,78" fill="none" stroke="#1a1510" stroke-width="1.3"/>
           </g>
 
-          <!-- 前腿（黑裤 + 大黄鞋，向前跨） -->
+          <!-- 前腿（黑裤，向前跨） -->
           <g class="run-leg-r">
-            <path d="M36,58 Q48,60 52,66" fill="none" stroke="#1a1510" stroke-width="6.5" stroke-linecap="round"/>
-            <path d="M52,66 Q60,66 62,62 Q60,58 50,60 L48,66 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
-            <path d="M62,62 Q63,64 62,68" fill="none" stroke="#1a1510" stroke-width="1.2"/>
+            <path d="M44,66 Q56,68 62,74" fill="none" stroke="url(#rPants)" stroke-width="7.5" stroke-linecap="round"/>
+            <path d="M62,74 Q70,74 71,69 Q68,65 58,67 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.4"/>
+            <path d="M71,69 Q72,72 70,75" fill="none" stroke="#1a1510" stroke-width="1.3"/>
           </g>
 
-          <!-- 躯干（红色夹克，强前倾） -->
-          <path d="M16,34 Q8,46 14,54 L40,54 Q49,46 44,31 Q30,27 16,34 Z" fill="#dc2626" stroke="#1a1510" stroke-width="2"/>
-          <!-- 黄色拉链条纹（街头感） -->
-          <line x1="31" y1="31" x2="33" y2="54" stroke="#f0b24b" stroke-width="2"/>
-          <!-- 胸前涂鸦标志 -->
-          <path d="M25,43 L29,39 L33,43 L29,47 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.2"/>
+          <!-- 躯干（红夹克，强前倾，带明暗） -->
+          <path d="M20,42 Q10,54 16,64 L48,64 Q58,56 52,40 Q36,35 20,42 Z" fill="url(#rJacket)" stroke="#1a1510" stroke-width="1.8"/>
+          <!-- 拉链 -->
+          <line x1="35" y1="40" x2="38" y2="64" stroke="#f0b24b" stroke-width="2"/>
+          <!-- 胸口菱形标志 -->
+          <path d="M28,52 L32,48 L36,52 L32,56 Z" fill="#f0b24b" stroke="#1a1510" stroke-width="1.2"/>
+          <!-- 领口 -->
+          <path d="M30,40 Q35,44 40,40" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
           <!-- 衣摆后飘 -->
-          <path d="M40,52 Q47,54 50,50 Q46,55 40,55" fill="#dc2626" stroke="#1a1510" stroke-width="1.6"/>
+          <path d="M48,62 Q56,64 58,58 Q53,65 48,65" fill="#dc2626" stroke="#1a1510" stroke-width="1.5"/>
 
-          <!-- 黑裤腰 -->
-          <path d="M18,50 Q17,55 22,58 L26,58 L26,54 L30,54 L30,58 L34,58 Q39,55 38,50 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.5"/>
+          <!-- 裤腰 -->
+          <path d="M18,60 Q16,65 22,68 L28,68 L28,64 L34,64 L34,68 L40,68 Q45,65 44,60 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
 
-          <!-- 前摆手臂（夹克袖，向前摆） -->
+          <!-- 前臂（红袖，向前摆） -->
           <g class="run-arm-r">
-            <path d="M44,32 Q52,36 54,44" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>
-            <path d="M54,44 Q53,46 51,45" fill="none" stroke="#f0b24b" stroke-width="7" stroke-linecap="round"/>
-            <circle cx="51" cy="46" r="3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.2"/>
+            <path d="M50,40 Q60,44 62,52" fill="none" stroke="url(#rJacket)" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="62" cy="53" r="3.5" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.2"/>
           </g>
 
-          <!-- 后扬尖刺黑发（打破圆形，明显的尖刺发束向后飞扬） -->
-          <!-- 主发块（后脑拉长，非圆形） -->
-          <path d="M14,20 Q8,12 14,8 Q24,4 34,4 Q48,4 52,14 Q55,22 52,30 Q49,38 44,42 L40,44 Q36,46 32,44 L28,46 Q24,44 20,42 Q15,38 13,32 Q10,26 14,20 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
-          <!-- 尖刺发束1（顶部，长尖刺向后上） -->
-          <path d="M14,8 Q4,4 6,12 Q10,10 16,14 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
-          <!-- 尖刺发束2（后上，长尖刺） -->
-          <path d="M8,16 Q-2,14 0,24 Q8,20 14,22 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
-          <!-- 尖刺发束3（后中，尖刺向后） -->
-          <path d="M6,26 Q-2,28 0,36 Q8,32 14,32 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
-          <!-- 尖刺发束4（后下，最长尖刺向后下） -->
-          <path d="M8,36 Q0,38 2,46 Q10,42 16,40 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.3"/>
-          <!-- 发丝高光（暖棕，避免死黑） -->
-          <path d="M20,10 Q30,7 40,11" fill="none" stroke="#5a4a3a" stroke-width="1.3" stroke-linecap="round" opacity="0.65"/>
-          <path d="M18,24 Q24,20 28,26" fill="none" stroke="#5a4a3a" stroke-width="1" opacity="0.5"/>
+          <!-- 后扬尖刺黑发（带渐变明暗，多束尖刺向后） -->
+          <path d="M14,26 Q4,14 18,6 Q32,0 44,4 Q60,8 62,22 Q64,32 58,42 Q50,50 42,48 L34,50 Q26,50 20,46 Q14,42 12,34 Q8,28 14,26 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.4"/>
+          <!-- 尖刺1（顶部，长尖刺向后上） -->
+          <path d="M18,6 Q4,0 4,12 Q12,8 20,14 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
+          <!-- 尖刺2 -->
+          <path d="M6,18 Q-4,16 0,30 Q10,22 16,24 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
+          <!-- 尖刺3 -->
+          <path d="M4,30 Q-4,32 0,44 Q10,36 16,36 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
+          <!-- 尖刺4（后下，最长） -->
+          <path d="M8,42 Q0,44 2,54 Q12,46 18,44 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.2"/>
+          <!-- 发丝高光（暖棕反光） -->
+          <path d="M22,10 Q34,6 46,12" fill="none" stroke="#6a5a4a" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+          <path d="M18,24 Q24,20 28,28" fill="none" stroke="#5a4a3a" stroke-width="1" opacity="0.4"/>
 
-          <!-- 头部（动漫少年，略前探） -->
-          <ellipse cx="34" cy="17" rx="14.5" ry="12" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.8"/>
-          <ellipse cx="20" cy="18" rx="2.6" ry="3.3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.4"/>
-          <ellipse cx="48" cy="18" rx="2.6" ry="3.3" fill="#f5c8a0" stroke="#1a1510" stroke-width="1.4"/>
+          <!-- 头部（侧脸，渐变肤色，前探，缩小拉长） -->
+          <path d="M18,28 Q17,14 40,11 Q56,13 56,27 Q56,35 50,39 Q45,41 42,39 Q36,41 30,39 Q19,37 18,31 Z" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.8"/>
+          <!-- 耳 -->
+          <path d="M19,28 Q15,28 16,32 Q18,34 20,32 Z" fill="url(#rSkin)" stroke="#1a1510" stroke-width="1.3"/>
 
           <!-- 前额尖刺刘海 -->
-          <path d="M20,14 Q19,4 34,2 Q49,4 48,14 Q48,11 44,10 Q40,8 37,11 Q35,8 32,10 Q29,8 26,11 Q22,11 20,14 Z" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4"/>
-          <!-- 鬓角碎发 -->
-          <path d="M20,14 Q18,20 21,26" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M48,14 Q50,20 47,26" fill="#1a1510" stroke="#0d0a08" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M18,28 Q17,10 40,8 Q56,10 56,28 Q56,21 50,17 Q44,12 42,18 Q38,12 34,17 Q30,12 26,18 Q21,17 18,28 Z" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.4"/>
+          <!-- 鬓角 -->
+          <path d="M18,28 Q16,34 19,40" fill="url(#rHair)" stroke="#0a0805" stroke-width="1.3" stroke-linecap="round"/>
 
-          <!-- 锐利眉毛（压低，坚毅感） -->
-          <path d="M22,12 Q27,11 30,13" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M38,13 Q41,11 46,12" fill="none" stroke="#1a1510" stroke-width="1.6" stroke-linecap="round"/>
+          <!-- 锐利眉（压低，坚毅） -->
+          <path d="M24,23 Q30,21 35,24" fill="none" stroke="#1a1510" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M43,24 Q47,21 53,23" fill="none" stroke="#1a1510" stroke-width="1.8" stroke-linecap="round"/>
 
-          <!-- 动漫锐利眼睛（专注前视，眼尾上挑） -->
-          <path d="M24,16 Q27,14 30,17 Q27,20 24,18 Z" fill="#1a1510"/>
-          <path d="M38,17 Q41,14 44,16 Q41,20 38,18 Z" fill="#1a1510"/>
-          <!-- 眼神高光 -->
-          <circle cx="27" cy="16" r="1.2" fill="#fff"/>
-          <circle cx="41" cy="16" r="1.2" fill="#fff"/>
+          <!-- 锐利窄眼（侧前视） -->
+          <path d="M25,27 Q30,25 34,28 Q30,30 25,28 Z" fill="#1a1510"/>
+          <path d="M43,28 Q47,25 52,27 Q48,30 43,29 Z" fill="#1a1510"/>
+          <circle cx="31" cy="27" r="1.1" fill="#fff"/>
+          <circle cx="48" cy="27" r="1.1" fill="#fff"/>
 
-          <!-- 坚毅嘴角 -->
-          <path d="M30,23 Q33,24 36,23" fill="none" stroke="#a05040" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- 鼻梁（侧脸轮廓，更锐利） -->
+          <path d="M42,31 Q43,34 41,35 Q39,35 39,34" fill="none" stroke="#c89870" stroke-width="1.3" stroke-linecap="round"/>
 
-          <!-- 暖色腮红 -->
-          <ellipse cx="22" cy="21" rx="2.5" ry="1.5" fill="#f0a890" opacity="0.45"/>
-          <ellipse cx="46" cy="21" rx="2.5" ry="1.5" fill="#f0a890" opacity="0.45"/>
+          <!-- 嘴（坚毅抿嘴） -->
+          <path d="M35,36 Q38,37 41,36" fill="none" stroke="#9a4a3a" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- 下颌角（锐化侧脸） -->
+          <path d="M42,39 Q47,38 52,35" fill="none" stroke="#c89870" stroke-width="1.1" opacity="0.55"/>
+          <path d="M50,39 Q53,38 55,34" fill="none" stroke="#1a1510" stroke-width="0.8" opacity="0.4"/>
         </svg>
       </div>
 
