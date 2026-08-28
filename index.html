@@ -220,9 +220,23 @@ h1, h2, h3 { text-wrap: balance; line-height: 1.25; }
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero .sub {
-  font-size: clamp(17px, 2vw, 19px); color: var(--text-dim); max-width: 540px; margin-bottom: 40px;
+  font-size: clamp(17px, 2vw, 19px); color: var(--text-dim); max-width: 540px; margin-bottom: 18px;
 }
+.hero .sub-roles {
+  font-size: clamp(13px, 1.6vw, 15px); color: var(--text-dim); max-width: 540px;
+  margin-bottom: 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+}
+.hero .sub-roles strong { color: var(--accent); }
 .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+/* 两端对齐：hero 内所有文字块宽度统一，左右边缘对齐成一条线 */
+.hero-inner { display: flex; flex-direction: column; }
+.hero-inner > * { width: 100%; }
+.hero-inner .role-tag,
+.hero-inner .cta-row { align-self: flex-start; width: auto; }
+/* 文本两端对齐：标题单行拉满、段落逐行 justify */
+.hero-inner h1 { text-align: justify; text-align-last: justify; }
+.hero-inner .sub,
+.hero-inner .sub-roles { text-align: justify; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-pixel); font-size: 12px; font-weight: 600;
@@ -275,12 +289,36 @@ section { padding: 84px 0; }
 .reveal[data-delay="1"] { transition-delay: .1s; }
 .reveal[data-delay="2"] { transition-delay: .2s; }
 .reveal[data-delay="3"] { transition-delay: .3s; }
+.reveal[data-delay="4"] { transition-delay: .4s; }
 
 /* ============================================================
    Open source (project-grouped)
    ============================================================ */
 .os-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 @media (max-width: 900px) { .os-grid { grid-template-columns: 1fr; } }
+/* Heym 横幅卡片：占满第一行，内容横向排布 */
+.os-card.banner {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(280px, 1.6fr);
+  gap: 20px 32px;
+  align-items: start;
+}
+.os-card.banner .banner-left { display: flex; flex-direction: column; }
+.os-card.banner .os-head { padding-right: 0; margin-bottom: 12px; }
+.os-card.banner .os-desc { margin: 0; }
+.os-card.banner .worth { margin-top: 12px; }
+.os-card.banner .os-stars {
+  position: static;
+  display: inline-block;
+  font-size: 11px;
+  padding: 4px 10px 6px;
+  box-shadow: none;
+}
+@media (max-width: 900px) {
+  .os-card.banner { grid-template-columns: 1fr; }
+  .os-card.banner .os-head { margin-bottom: 8px; }
+}
 .os-card {
   background: var(--surface); border: 3px solid var(--line); border-radius: 0;
   padding: 26px 28px; transition: transform .15s, border-color .15s, box-shadow .15s;
@@ -360,6 +398,13 @@ section { padding: 84px 0; }
 .proj-cat { font-family: var(--font-pixel); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-2); }
 .proj-rank { font-family: var(--font-pixel); font-size: 12px; color: var(--text-faint); }
 .proj-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.rank-chip {
+  display: inline-block; vertical-align: middle; margin-left: 8px;
+  font-family: var(--font-pixel); font-size: 12px; font-weight: 700;
+  color: #fff; background: var(--gold);
+  padding: 3px 8px 4px; border-radius: 0;
+  box-shadow: 0 2px 0 rgba(60,45,30,.25);
+}
 .proj-desc { color: var(--text-dim); font-size: 15.5px; margin-bottom: 18px; }
 .proj-metric {
   display: inline-flex; align-items: baseline; gap: 6px;
@@ -828,13 +873,16 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
   <div class="wrap hero-main">
     <div class="hero-left">
       <div class="hero-inner">
-        <span class="role-tag"><span class="pulse"></span> AGENT INFRASTRUCTURE · 开源贡献者</span>
-        <h1>把「评测、优化与<br><span class="grad">智能体系统</span>」做成<wbr>作品。</h1>
+        <span class="role-tag"><span class="pulse"></span> TECHNICAL PRODUCT · 懂技术的产品经理</span>
+        <h1><span class="grad">做 AI 时代的复合型产品人</span>。</h1>
         <p class="sub">
-          在 3 个外部开源项目（aibrix / Dify / OpenSandbox）合并过 PR；
-          昇腾 AI 大赛把 MiniCPM-o 推理 RTF 压到官方基线的 <strong class="tnum">-35~-40%</strong>；
+          在 4 个外部开源项目（Heym / aibrix / OpenSandbox / Dify）合并过 PR，
+          获 Heym 作者邀请加入官方社区；
+          昇腾 AI 大赛 MiniCPM-o 推理 <strong class="tnum">RTF 压到官方基线 -35~-40%</strong>，
+          <strong class="tnum">位列排行榜 TOP3</strong>；
           自研 Agent 评测基准与完整产品原型。
         </p>
+        <p class="sub-roles">意向 AI 时代新岗位：<strong>AI 产品经理</strong> · Forward Deployed Engineer · AI 全栈工程师 · AI Agent 工程师 · 解决方案工程师</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#open-source">看开源贡献 ↓</a>
           <a class="btn" href="#projects">看作品</a>
@@ -1036,7 +1084,37 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
 
     <div class="os-grid">
       <!-- aibrix -->
-      <div class="os-card reveal" data-delay="1">
+      <!-- Heym -->
+      <div class="os-card banner reveal" data-delay="1">
+        <div class="banner-left">
+          <div class="os-head">
+            <div class="os-name">Heym <span class="org">· heymrun</span></div>
+            <div class="os-meta">
+              <span class="os-stars">★ 1k</span>
+              <span class="os-badge">2 PRs MERGED</span>
+            </div>
+          </div>
+          <p class="os-desc"><strong class="hl">AI-Native 工作流自动化平台</strong>。设计并实现执行日志的「执行时间线健康度汇总」与「Span 详情检查器」，帮助定位执行链路异常节点。因贡献突出，<strong class="hl">获项目作者邀请加入官方社区</strong>。</p>
+          <div class="worth">作者邀请入社区 · 新方向</div>
+        </div>
+        <div class="banner-right">
+          <div class="pr-list">
+            <div class="pr">
+              <span class="pr-title">feat(frontend): summarize execution timeline health</span>
+              <span class="pr-num">#494</span>
+              <span class="merged-chip">MERGED</span>
+            </div>
+            <div class="pr">
+              <span class="pr-title">feat(frontend): add execution span details inspector</span>
+              <span class="pr-num">#496</span>
+              <span class="merged-chip">MERGED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- aibrix -->
+      <div class="os-card reveal" data-delay="2">
         <div class="os-head">
           <div class="os-name">aibrix <span class="org">· vllm-project · Go</span></div>
           <div class="os-meta">
@@ -1049,19 +1127,19 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           <div class="pr">
             <span class="pr-title">docs(samples): add health and readiness probes to AI gateway examples</span>
             <span class="pr-num">#2582</span>
-            <span class="merged-chip">MERGED</span><span class="pr-date">08-19</span>
+            <span class="merged-chip">MERGED</span>
           </div>
           <div class="pr">
             <span class="pr-title">docs(samples): add health and readiness probes to volcano-engine examples</span>
             <span class="pr-num">#2581</span>
-            <span class="merged-chip">MERGED</span><span class="pr-date">08-19</span>
+            <span class="merged-chip">MERGED</span>
           </div>
         </div>
-        <div class="worth">AI 基础设施层 · 含金量最高</div>
+        <div class="worth">AI 基础设施层 · vLLM 官方生态</div>
       </div>
 
       <!-- Dify -->
-      <div class="os-card reveal" data-delay="2">
+      <div class="os-card reveal" data-delay="3">
         <div class="os-head">
           <div class="os-name">Dify <span class="org">· langgenius</span></div>
           <div class="os-meta">
@@ -1074,7 +1152,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           <div class="pr">
             <span class="pr-title">fix(web): prevent signin page content from overflowing on mobile</span>
             <span class="pr-num">#40921</span>
-            <span class="merged-chip">MERGED</span><span class="pr-date">08-21</span>
+            <span class="merged-chip">MERGED</span>
           </div>
         </div>
         <div class="worth">主流 Agent 平台</div>
@@ -1082,7 +1160,7 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
       </div>
 
       <!-- OpenSandbox -->
-      <div class="os-card reveal" data-delay="3">
+      <div class="os-card reveal" data-delay="4">
         <div class="os-head">
           <div class="os-name">OpenSandbox <span class="org">· opensandbox</span></div>
           <div class="os-meta">
@@ -1095,12 +1173,12 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
           <div class="pr">
             <span class="pr-title">ci(charts): add helm-docs generation and drift check</span>
             <span class="pr-num">#1572</span>
-            <span class="merged-chip">MERGED</span><span class="pr-date">08-20</span>
+            <span class="merged-chip">MERGED</span>
           </div>
           <div class="pr">
             <span class="pr-title">fix(server,k8s): propagate template container securityContext</span>
             <span class="pr-num">#1564</span>
-            <span class="merged-chip">MERGED</span><span class="pr-date">08-19</span>
+            <span class="merged-chip">MERGED</span>
           </div>
         </div>
         <div class="worth">Agent 沙箱 · 与方向强相关</div>
@@ -1131,13 +1209,16 @@ footer.footer { border-top: 2px solid var(--line); padding: 30px 0; text-align: 
             <span class="proj-cat">Performance · 昇腾 AI 大赛</span>
             <span class="proj-rank">#1</span>
           </div>
-          <h3 class="proj-title">MiniCPM-o 昇腾优化</h3>
-          <p class="proj-desc">昇腾 AI 创新大赛子赛道 A：<strong class="hl">Ascend 910 双卡</strong>上优化 MiniCPM-o 多模态推理（<strong class="hl">FlashAttention</strong>、NPU 算子、流水线），16 个 Sprint 结构化实验归档。</p>
+          <h3 class="proj-title">MiniCPM-o 昇腾优化 <span class="rank-chip">TOP 3</span></h3>
+          <p class="proj-desc">昇腾 AI 创新大赛子赛道 A：<strong class="hl">Ascend 910 双卡</strong>上优化 MiniCPM-o 多模态推理（<strong class="hl">FlashAttention</strong>、NPU 算子、流水线），16 个 Sprint 结构化实验归档。<strong class="hl">当前位列昇腾排行榜 TOP 3</strong>（队伍 doma）。</p>
           <div class="proj-metric"><span class="m-num tnum">-35~-40%</span><span class="m-lbl">RTF 相对官方基线</span></div>
           <div class="proj-tags">
-            <span class="tag hot">FlashAttention</span><span class="tag hot">NPU 算子</span><span class="tag">Ascend 910</span><span class="tag">RTF</span><span class="tag">实验工程</span>
+            <span class="tag hot">FlashAttention</span><span class="tag hot">NPU 算子</span><span class="tag">Ascend 910</span><span class="tag">RTF</span><span class="tag">TOP3</span>
           </div>
-          <a class="proj-link" href="https://github.com/gegemeimingzi/MiniCPM-o-Ascend-Optimization-Docs" target="_blank" rel="noopener">查看仓库 ↗</a>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/gegemeimingzi/MiniCPM-o-Ascend-Optimization-Docs" target="_blank" rel="noopener">查看仓库 ↗</a>
+            <a class="btn btn-sm" href="https://ascend.openbmb.cn/leaderboard" target="_blank">🏆 排行榜 ↗</a>
+          </div>
         </div>
       </div>
 
